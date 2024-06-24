@@ -1,0 +1,23 @@
+name: Publish GitHub Pages
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        # You may use a newer version of https://github.com/actions/checkout
+        uses: actions/checkout@v4
+
+      - name: Publish current workdir to GitHub Pages
+        uses: rayluo/github-pages-overwriter@v1.3
+
+        with:
+          source-directory: dist
+          target-branch: gh-pages
