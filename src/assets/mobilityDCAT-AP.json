@@ -70,6 +70,7 @@
                 "title": "Mobility themes",
                 "description": "Categories describing the data in the data source. The first level of categories defined by the mobilitydcatap:mobilityTheme vocabulary can be selected. This field is recommended.",
                 "type": "array",
+                "default": ["Other"],
                 "items": {
                     "type": "string",
                     "enum": [
@@ -196,8 +197,7 @@
                         "Air and space travel",
                         "Waterways and water bodies",
                         "Other"
-                    ],
-                    "default": "Other"
+                    ]
                 }
             },
             "accrual_periodicity": {

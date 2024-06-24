@@ -5,10 +5,10 @@
         <v-row class="px-10 my-2">
             <v-col cols="8" class="py-2">
                 <p><b>Fill the form with all the metadata and download the RDF</b> representation using <a href="https://w3id.org/mobilitydcat-ap/">mobilityDCAT-AP</a>. Test and experiment to learn how different information should be described in RDF according to the mobilityDCAT-AP specification. The form is compliant with the minimum profile required by mobilityDCAT-AP.<br><br>
-                The page is client-side only so all the information inserted are not collected/stored but can not be retrieved if the page is reloaded. The output RDF can be converted to different serialization using online converters such as <a href="https://rdfshape.weso.es/dataConvert">RDFShape</a>.<br><br>
+                The page is client-side only so all the information inserted are not collected/stored but can not be retrieved if the page is reloaded. The output RDF can be converted to different serializations using online converters such as <a href="https://rdfshape.weso.es/dataConvert">RDFShape</a>.<br><br>
                 This page is powered by <b>KCONG (Knowledge Catalogue and Governance)</b> a complete (meta)data catalogue solution developed by <a href="https://www.cefriel.com/">Cefriel</a>. If you want to know more visit <a href="https://kcong.cefriel.com/">https://kcong.cefriel.com/</a>.</p>
             </v-col>
-            <v-col cols="4" class="text-right py-2">
+            <v-col cols="4" class="text-center py-2">
                 <img src="@/assets/logo.png" alt="Company Logo" style="max-height: 100px;">
             </v-col>
         </v-row>
@@ -165,41 +165,10 @@ export default {
                     .replace(/-+/g, '-'); // remove consecutive hyphens
             }
 
-            let freq_iri = {
-                "Continuously": "http://publications.europa.eu/resource/authority/frequency/UPDATE_CONT",
-                "Never (one-time provision)": "http://publications.europa.eu/resource/authority/frequency/NEVER",
-                "On occurrence / irregularly": "http://publications.europa.eu/resource/authority/frequency/IRREG",
-                "Up to 1min": "https://w3id.org/mobilitydcat-ap/update-frequency/1min",
-                "Up to 5min": "https://w3id.org/mobilitydcat-ap/update-frequency/5min",
-                "Up to 10 min": "https://w3id.org/mobilitydcat-ap/update-frequency/10min",
-                "Up to 15 min": "https://w3id.org/mobilitydcat-ap/update-frequency/15min",
-                "Up to 30 min": "https://w3id.org/mobilitydcat-ap/update-frequency/30min",
-                "Up to 1h": "http://publications.europa.eu/resource/authority/frequency/HOURLY",
-                "Up to 2h": "http://publications.europa.eu/resource/authority/frequency/BIHOURLY",
-                "Up to 3h": "http://publications.europa.eu/resource/authority/frequency/TRIHOURLY",
-                "Up to 12h": "https://w3id.org/mobilitydcat-ap/update-frequency/12h",
-                "Up to 24h": "https://w3id.org/mobilitydcat-ap/update-frequency/24h",
-                "Up to Weekly": "http://publications.europa.eu/resource/authority/frequency/WEEKLY",
-                "Up to Monthly": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
-                "Up to every 2 months": "http://publications.europa.eu/resource/authority/frequency/BIMONTHLY",
-                "Up to every 3 months": "http://publications.europa.eu/resource/authority/frequency/QUARTERLY",
-                "Up to every 6 months": "https://w3id.org/mobilitydcat-ap/update-frequency/6-months",
-                "Up to Annual": "http://publications.europa.eu/resource/authority/frequency/ANNUAL",
-                "Up to Biennial": "http://publications.europa.eu/resource/authority/frequency/BIENNIAL",
-                "Up to Triennial": "http://publications.europa.eu/resource/authority/frequency/TRIENNIAL",
-                "Up to Quadrennial": "http://publications.europa.eu/resource/authority/frequency/QUADRENNIAL",
-                "Up to Quinquennial": "http://publications.europa.eu/resource/authority/frequency/QUINQUENNIAL",
-                "Up to Decennial": "http://publications.europa.eu/resource/authority/frequency/DECENNIAL",
-                "Up to Bidecennial": "http://publications.europa.eu/resource/authority/frequency/BIDECENNIAL",
-                "Up to Tridecennial": "http://publications.europa.eu/resource/authority/frequency/TRIDECENNIAL",
-                "Unknown": "http://publications.europa.eu/resource/authority/frequency/UNKNOWN"
-            };
-
             try {
                 this.saved_asset = this.template.render({
                     obj: this.asset,
                     data_platform_url: "https://kcong.cefriel.com/",
-                    freq_iri: freq_iri,
                     slugify: slugify
                 });
             }
