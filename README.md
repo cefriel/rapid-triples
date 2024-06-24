@@ -1,6 +1,6 @@
 # mobilitydcatap-ui
 
-Generate [mobilityDCAT-AP](https://w3id.org/mobilitydcat-ap/) metadata in RDF using a form-based interface. Test and experiment with different metadata to learn how different information are described according to the moilityDCAT-AP specification.
+Generate [mobilityDCAT-AP](https://w3id.org/mobilitydcat-ap/) metadata in RDF using a form-based interface. Test and experiment with different metadata to learn how different information are described according to the mobilityDCAT-AP specification.
 
 The form is compliant with the minimum profile of mobilityDCAT-AP.
 
