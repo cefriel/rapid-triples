@@ -5,7 +5,8 @@
         <v-row class="px-10 my-2">
             <v-col cols="8" class="py-2">
                 <p>Fill the form with all the metadata and download the RDF representation using <a href="https://w3id.org/mobilitydcat-ap/">mobilityDCAT-AP</a>.<br>
-                The form is compliant with the minimum profile required by mobilityDCAT-AP.</p>
+                Test and experiment with different metadata to learn how different information are described according to the moilityDCAT-AP specification. The form is compliant with the minimum profile required by mobilityDCAT-AP.<br>
+                The page is client-side only so all the information inserted are not collected/stored but can not be retrieved if the page is reloaded.</p>
             </v-col>
             <v-col cols="4" class="text-right py-2">
                 <img src="@/assets/logo.png" alt="Company Logo" style="max-height: 100px;">
