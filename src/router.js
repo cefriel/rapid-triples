@@ -10,7 +10,7 @@ const router= new Router({
     mode: 'history',
     routes: [
         {
-            path: '/',
+            path: '/mobilitydcatap-ui/',
             name: 'asset_create',
             component: AssetCreate,
             props: {

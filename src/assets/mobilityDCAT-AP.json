@@ -23,27 +23,17 @@
                 "description": "Description of the data contained in the data source",
                 "default": "My Data Source contains mobility data about mobility things."
             },
-            "publisher": {
-                "title": "Publisher",
-                "description": "The entity that provides the data source",
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "publisher_name": {
-                            "type": "string",
-                            "title": "Publisher name",
-                            "description": "Name of the entity providing the data source",
-                            "default": "Cefriel Data Publisher"
-                        },
-                        "publisher_email": {
-                            "title": "Publisher email",
-                            "type": "string",
-                            "description": "Email of the entity providing the data source",
-                            "default": "info@cefriel.com"
-                        }
-                    }
-                }  
+            "publisher_name": {
+                "type": "string",
+                "title": "Publisher name",
+                "description": "Name of the entity providing the data source",
+                "default": "Cefriel Data Publisher"
+            },
+            "publisher_email": {
+                "title": "Publisher email",
+                "type": "string",
+                "description": "Email of the entity providing the data source",
+                "default": "info@cefriel.com"
             },
             "access_url": {
                 "type": "string",
@@ -206,51 +196,8 @@
                         "Air and space travel",
                         "Waterways and water bodies",
                         "Other"
-                    ]
-                }
-            },
-            "distributions": {
-                "title": "Distributions",
-                "description": "A specific representation of a Dataset.",
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "data_schema": {
-                            "description": "The data schema/model adopted to represent the data in the distribution. The data schema/model should be selected from the list defined in the mobilitydcatap:mobility-data-standard vocabulary or defined as TANGENT Reference Conceptual Model.",
-                            "title": "Data schema/model",
-                            "type": "string",
-                            "default": "Other",
-                            "enum": [
-                                "DATEX II",
-                                "OCIT-C",
-                                "C-ITS",
-                                "TN-ITS",
-                                "INSPIRE",
-                                "GML",
-                                "NeTEx",
-                                "SIRI",
-                                "GTFS",
-                                "GTFS-RT",
-                                "GBFS",
-                                "tpegML",
-                                "DINO",
-                                "Other"
-                            ]
-                        },
-                        "format": {
-                            "type": "string",
-                            "description": "The format used to encode the data in the distribution. The vocabulary http://publications.europa.eu/resource/dataset/file-type is recommended to serialise the admissible values ",
-                            "title": "Resource format",
-                            "default": "http://publications.europa.eu/resource/authority/file-type/CSV"
-                        },
-                        "access_url": {
-                            "type": "string",
-                            "title": "Access URL.",
-                            "description": "URL redirecting to a webpage or an endpoint to access the data.",
-                            "default": "http://www.cefriel.com/data/my_data_source"
-                        }
-                    }
+                    ],
+                    "default": "Other"
                 }
             },
             "accrual_periodicity": {
@@ -305,6 +252,50 @@
                 "format": "date",
                 "description": "The ending timestamp for the timeframe covered by the data source. This field is recommended.",
                 "title": "Timeframe end"
+            },
+            "distributions": {
+                "title": "Distributions",
+                "description": "A specific representation of a Dataset.",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "data_schema": {
+                            "description": "The data schema/model adopted to represent the data in the distribution. The data schema/model should be selected from the list defined in the mobilitydcatap:mobility-data-standard vocabulary or defined as TANGENT Reference Conceptual Model.",
+                            "title": "Data schema/model",
+                            "type": "string",
+                            "default": "Other",
+                            "enum": [
+                                "DATEX II",
+                                "OCIT-C",
+                                "C-ITS",
+                                "TN-ITS",
+                                "INSPIRE",
+                                "GML",
+                                "NeTEx",
+                                "SIRI",
+                                "GTFS",
+                                "GTFS-RT",
+                                "GBFS",
+                                "tpegML",
+                                "DINO",
+                                "Other"
+                            ]
+                        },
+                        "format": {
+                            "type": "string",
+                            "description": "The format used to encode the data in the distribution. The vocabulary http://publications.europa.eu/resource/dataset/file-type is recommended to serialise the admissible values ",
+                            "title": "Resource format",
+                            "default": "http://publications.europa.eu/resource/authority/file-type/CSV"
+                        },
+                        "access_url": {
+                            "type": "string",
+                            "title": "Access URL.",
+                            "description": "URL redirecting to a webpage or an endpoint to access the data.",
+                            "default": "http://www.cefriel.com/data/my_data_source"
+                        }
+                    }
+                }
             }
         }
     }

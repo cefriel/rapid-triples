@@ -20,8 +20,8 @@
 @prefix mtheme: <https://w3id.org/mobilitydcat-ap/mobility-theme/> .
 
 {{catalogue_id | safe}} rdf:type dcat:Catalog;
-	dct:title "Cefriel Data Catalogue for {{asset_type}}";
-	dct:description "Catalogue of TANGENT data sources for {{asset_type}}"@en;
+	dct:title "Cefriel RDF Metadata Generator for mobilityDCAT-AP";
+	dct:description "Cefriel RDF Metadata Generator for mobilityDCAT-AP powered by KCONG"@en;
 	dct:publisher [
 	    rdf:type foaf:Agent;
 	    foaf:name "Cefriel Data Publisher";
@@ -29,7 +29,7 @@
 	];
 	dct:dataset {{asset_id | safe}};
 	dcat:record {{catalogue_record_id | safe}};
-	foaf:homepage <{{asset_type_url}}>.
+	foaf:homepage <https://kcong.cefriel.com/>.
 
 {{catalogue_record_id | safe}} rdf:type dcat:CatalogRecord ;
 	dct:modified "{{dcat_content.last_updated}}"^^xsd:dateTime ;
@@ -40,14 +40,14 @@
     dct:identifier """{{dcat_content.identifier}}""";
     dct:title "{{dcat_content.name}}";
     dct:description """{{dcat_content.description}}""";
-    {%if dcat_content.publisher.publisher_name or dcat_content.publisher.publisher_email %}
+    {%if dcat_content.publisher_name or dcat_content.publisher_email %}
     dct:publisher [
 	    rdf:type foaf:Agent;
-      {%if dcat_content.publisher.publisher_name %}
-	    foaf:name "{{dcat_content.publisher.publisher_name}}";
+      {%if dcat_content.publisher_name %}
+	    foaf:name "{{dcat_content.publisher_name}}";
       {%endif%}
-      {%if dcat_content.publisher.publisher_email %}
-	    foaf:mbox "{{dcat_content.publisher.publisher_email}}";
+      {%if dcat_content.publisher_email %}
+	    foaf:mbox "{{dcat_content.publisher_email}}";
       {%endif%}
     ];
     {%endif%}
