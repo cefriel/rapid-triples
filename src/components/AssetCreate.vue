@@ -24,7 +24,7 @@
                             v-bind:schema="asset_schema" v-bind:options="options" />
                     </v-form>
                     <p><br></p>
-                    <v-btn @click="create_object" style="margin-top: 10px;">Submit</v-btn>
+                    <v-btn @click="create_object" style="margin-top: 10px;">Generate</v-btn>
                 </v-col>
 
                 <v-col cols="6">
