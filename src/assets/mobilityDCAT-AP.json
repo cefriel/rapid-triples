@@ -33,7 +33,7 @@
                 "title": "Publisher email",
                 "type": "string",
                 "description": "Email of the entity providing the data source",
-                "default": "info@cefriel.com"
+                "default": "no-reply@cefriel.com"
             },
             "access_url": {
                 "type": "string",
