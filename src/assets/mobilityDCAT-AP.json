@@ -24,23 +24,26 @@
                 "default": "My Data Source contains mobility data about mobility things."
             },
             "publisher": {
-                "description": "The entity that provides the data source",
-                "type": "object",
                 "title": "Publisher",
-                "properties": {
-                    "publisher_name": {
-                        "type": "string",
-                        "title": "Publisher name",
-                        "description": "Name of the entity providing the data source",
-                        "default": "Cefriel Data Publisher"
-                    },
-                    "publisher_email": {
-                        "title": "Publisher email",
-                        "type": "string",
-                        "description": "Email of the entity providing the data source",
-                        "default": "info@cefriel.com"
+                "description": "The entity that provides the data source",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "publisher_name": {
+                            "type": "string",
+                            "title": "Publisher name",
+                            "description": "Name of the entity providing the data source",
+                            "default": "Cefriel Data Publisher"
+                        },
+                        "publisher_email": {
+                            "title": "Publisher email",
+                            "type": "string",
+                            "description": "Email of the entity providing the data source",
+                            "default": "info@cefriel.com"
+                        }
                     }
-                }
+                }  
             },
             "access_url": {
                 "type": "string",
@@ -206,42 +209,9 @@
                     ]
                 }
             },
-            "data_sample": {
-                "title": "Data sample",
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "sample_description": {
-                            "type": "string",
-                            "title": "Description of the data sample"
-                        },
-                        "sample_file": {
-                            "writeOnly": true,
-                            "title": "Data sample file",
-                            "x-display": "file",
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "x-display": "hidden"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "x-display": "hidden"
-                                },
-                                "url": {
-                                    "type": "string",
-                                    "title": "URL",
-                                    "x-display": "custom-url-download"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "distributions": {
                 "title": "Distributions",
+                "description": "A specific representation of a Dataset.",
                 "type": "array",
                 "items": {
                     "type": "object",
