@@ -1,0 +1,342 @@
+{
+    "type": "object",
+    "properties": {
+    "header": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "identifier": {
+                "type": "string",
+                "title": "Identifier",
+                "description": "Identifier of the data source.",
+                "default": "MY_DATASOURCE"
+            },
+            "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Name of the data source",
+                "default": "My Data Source"
+            },
+            "description": {
+                "type": "string",
+                "title": "Description",
+                "description": "Description of the data contained in the data source",
+                "default": "My Data Source contains mobility data about mobility things."
+            },
+            "publisher": {
+                "description": "The entity that provides the data source",
+                "type": "object",
+                "title": "Publisher",
+                "properties": {
+                    "publisher_name": {
+                        "type": "string",
+                        "title": "Publisher name",
+                        "description": "Name of the entity providing the data source",
+                        "default": "Cefriel Data Publisher"
+                    },
+                    "publisher_email": {
+                        "title": "Publisher email",
+                        "type": "string",
+                        "description": "Email of the entity providing the data source",
+                        "default": "info@cefriel.com"
+                    }
+                }
+            },
+            "access_url": {
+                "type": "string",
+                "title": "Access URL",
+                "x-display": "hidden"
+            },
+            "creation_time": {
+                "type": "string",
+                "title": "Creation date",
+                "x-display": "hidden"
+            },
+            "last_updated": {
+                "type": "string",
+                "title": "Modification time",
+                "x-display": "hidden"
+            },
+            "type": {
+                "type": "string",
+                "title": "Type",
+                "x-display": "hidden"
+            },
+            "id": {
+                "type": "string",
+                "title": "Identifier",
+                "x-display": "hidden"
+            }
+        }
+    },
+    "content":  {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "mobility_themes": {
+                "title": "Mobility themes",
+                "description": "Categories describing the data in the data source. The first level of categories defined by the mobilitydcatap:mobilityTheme vocabulary can be selected. This field is recommended.",
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "enum": [
+                        "Static road network data",
+                        "Geometry",
+                        "Road width",
+                        "Number of lanes",
+                        "Gradients",
+                        "Junctions",
+                        "Road classification",
+                        "Cycle network data",
+                        "Network geometry and lane character",
+                        "Network detailed attributes",
+                        "Network closures/diversions",
+                        "Pedestrian network data",
+                        "Pedestrian network geometry",
+                        "Pedestrian accessibility facilities",
+                        "Static traffic signs and regulations",
+                        "Tunnel access conditions",
+                        "Bridge access conditions",
+                        "Speed limits",
+                        "Other static traffic signs",
+                        "Permanent access restrictions",
+                        "Other traffic regulations",
+                        "Traffic circulation plans",
+                        "Toll information",
+                        "Location of tolling stations",
+                        "Identification of tolled roads",
+                        "Applicable road user charges and payment methods",
+                        "Payment methods for tolls",
+                        "Parking, service and rest area information",
+                        "Car parking locations and conditions",
+                        "Car parking availability",
+                        "Service and rest area locations and conditions",
+                        "Service and rest area availability",
+                        "Truck parking locations and conditions",
+                        "Truck parking availability",
+                        "Park and Ride stops",
+                        "Bike-parking locations",
+                        "Filling and charging stations",
+                        "Location and conditions of charging points",
+                        "Location and conditions of filling stations",
+                        "Availability of charging points for electric vehicles",
+                        "Availability of filling stations",
+                        "Freight and logistics",
+                        "Freight delivery regulations",
+                        "Location of delivery areas",
+                        "Availability of delivery areas",
+                        "Dynamic traffic signs and regulations",
+                        "Road closures and access conditions",
+                        "Lane closures and access conditions",
+                        "Bridge closures and access conditions",
+                        "Tunnel closures and access conditions",
+                        "Other access restrictions and traffic regulations",
+                        "Dynamic overtaking bans on heavy goods vehicles",
+                        "Dynamic speed limits",
+                        "Direction of travel on reversible lanes",
+                        "Other temporary traffic management measures or plans",
+                        "Road work information",
+                        "Long-term road works",
+                        "Short-term road works",
+                        "Road events and conditions",
+                        "Accidents and incidents",
+                        "Poor road conditions",
+                        "Road weather conditions",
+                        "Real-time traffic data",
+                        "Traffic volume",
+                        "Speed",
+                        "Location and length of queues",
+                        "Current travel times",
+                        "Predicted travel times",
+                        "Expected delays",
+                        "Waiting time at border crossings to non-EU Member States",
+                        "Traffic data at border crossings to third countries",
+                        "General information for trip-planning",
+                        "Address identifiers",
+                        "Topographic places",
+                        "Points of interest",
+                        "Parameters needed to calculate environmental factors",
+                        "Parameters needed to calculate costs",
+                        "Public transport scheduled transport",
+                        "Stop facilities location and features",
+                        "Stop facilities geometry and map layout",
+                        "Stop facilities status of features",
+                        "Stop facilities accessibility and paths within facility",
+                        "Operational Calendar",
+                        "Connection links",
+                        "Network topology and routes/lines",
+                        "Transport operators",
+                        "Timetables static",
+                        "Real-time estimated departure and arrival times",
+                        "Planned interchanges between scheduled services",
+                        "Hours of operation",
+                        "Vehicle details",
+                        "Environmental standards for vehicles",
+                        "Disruptions, delays, cancellations",
+                        "Basic common standard fares",
+                        "Passenger classes",
+                        "Common fare products",
+                        "Special Fare Products",
+                        "Basic commercial conditions",
+                        "Purchase information",
+                        "Public transport non-scheduled transport",
+                        "Provider data",
+                        "Service areas and service times",
+                        "Locations and stations",
+                        "Fares",
+                        "Reservation and purchase options",
+                        "Accesibility information for vehicles",
+                        "Environmental standards for vehicles",
+                        "Sharing and Hiring Services",
+                        "Bike-sharing Locations and stations",
+                        "Car-sharing Locations and stations",
+                        "Bike-hiring Stations",
+                        "Car-sharing Stations",
+                        "E-scooter-sharing Locations and stations",
+                        "Car-sharing Availability",
+                        "Bike sharing Availability",
+                        "Car-hiring Availability",
+                        "Bike-hiring Availability",
+                        "E-scooter-sharing Availability",
+                        "Payment methods",
+                        "Environmental standards for vehicles",
+                        "Air and space travel",
+                        "Waterways and water bodies",
+                        "Other"
+                    ]
+                }
+            },
+            "data_sample": {
+                "title": "Data sample",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "sample_description": {
+                            "type": "string",
+                            "title": "Description of the data sample"
+                        },
+                        "sample_file": {
+                            "writeOnly": true,
+                            "title": "Data sample file",
+                            "x-display": "file",
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "x-display": "hidden"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "x-display": "hidden"
+                                },
+                                "url": {
+                                    "type": "string",
+                                    "title": "URL",
+                                    "x-display": "custom-url-download"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "distributions": {
+                "title": "Distributions",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "data_schema": {
+                            "description": "The data schema/model adopted to represent the data in the distribution. The data schema/model should be selected from the list defined in the mobilitydcatap:mobility-data-standard vocabulary or defined as TANGENT Reference Conceptual Model.",
+                            "title": "Data schema/model",
+                            "type": "string",
+                            "default": "Other",
+                            "enum": [
+                                "DATEX II",
+                                "OCIT-C",
+                                "C-ITS",
+                                "TN-ITS",
+                                "INSPIRE",
+                                "GML",
+                                "NeTEx",
+                                "SIRI",
+                                "GTFS",
+                                "GTFS-RT",
+                                "GBFS",
+                                "tpegML",
+                                "DINO",
+                                "Other"
+                            ]
+                        },
+                        "format": {
+                            "type": "string",
+                            "description": "The format used to encode the data in the distribution. The vocabulary http://publications.europa.eu/resource/dataset/file-type is recommended to serialise the admissible values ",
+                            "title": "Resource format",
+                            "default": "http://publications.europa.eu/resource/authority/file-type/CSV"
+                        },
+                        "access_url": {
+                            "type": "string",
+                            "title": "Access URL.",
+                            "description": "URL redirecting to a webpage or an endpoint to access the data.",
+                            "default": "http://www.cefriel.com/data/my_data_source"
+                        }
+                    }
+                }
+            },
+            "accrual_periodicity": {
+                "description": "Describes how often the content of the data source is updated. The usage of the vocabularies http://publications.europa.eu/resource/authority/frequency and https://w3id.org/mobilitydcat-ap/update-frequency is recommended.",
+                "title": "Accrual periodicity",
+                "type": "string",
+                "enum": [
+                    "Continuously",
+                    "Never (one-time provision)",
+                    "On occurrence / irregularly",
+                    "Up to 1min",
+                    "Up to 5min",
+                    "Up to 10 min",
+                    "Up to 15 min",
+                    "Up to 30 min",
+                    "Up to 1h",
+                    "Up to 2h",
+                    "Up to 3h",
+                    "Up to 12h",
+                    "Up to 24h",
+                    "Up to Weekly",
+                    "Up to Monthly",
+                    "Up to every 2 months",
+                    "Up to every 3 months",
+                    "Up to every 6 months",
+                    "Up to Annual",
+                    "Up to Biennial",
+                    "Up to Triennial",
+                    "Up to Quadrennial",
+                    "Up to Quinquennial",
+                    "Up to Decennial",
+                    "Up to Bidecennial",
+                    "Up to Tridecennial",
+                    "Unknown"
+                ],
+                "default": "Unknown"
+            },
+            "spatial_coverage": {
+                "type": "string",
+                "default": "http://publications.europa.eu/resource/authority/country/ITA",
+                "description": "The geographical coverage of the data in the data source.",
+                "title": "Area covered"
+            },
+            "temporal_coverage_start": {
+                "type": "string",
+                "format": "date",
+                "description": "The starting timestamp for the timeframe covered by the data source. This field is recommended.",
+                "title": "Timeframe start"
+            },
+            "temporal_coverage_end": {
+                "type": "string",
+                "format": "date",
+                "description": "The ending timestamp for the timeframe covered by the data source. This field is recommended.",
+                "title": "Timeframe end"
+            }
+        }
+    }
+}
+}
