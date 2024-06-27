@@ -1,21 +1,18 @@
-# mobilitydcatap-ui
+# rdform
 
-Generate [mobilityDCAT-AP](https://w3id.org/mobilitydcat-ap/) metadata in RDF using a form-based interface. Test and experiment with different metadata to learn how different information are described according to the mobilityDCAT-AP specification.
-
-The form is compliant with the minimum profile of mobilityDCAT-AP.
-
-Visit the webpage at: https://cefriel.github.io/mobilitydcatap-ui
+Generate RDF using a form-based interface.
+Fork the template and configure it with your own form.
 
 ### Run it locally
 
 Build the image
 ```sh
-docker build -f Dockerfile-build --no-cache -t cefriel/mobilitydcatap-ui .
+docker build -f Dockerfile-build --no-cache -t cefriel/rdform-demo .
 ```
 
 Run the image
 ```sh
-docker run -p 8080:80 cefriel/mobilitydcatap-ui
+docker run -p 8080:80 cefriel/rdform-demo
 ```
 
 Visit http://localhost:8080.
