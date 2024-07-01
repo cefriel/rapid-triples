@@ -16,4 +16,3 @@ docker run -p 8080:80 cefriel/rdform-demo
 ```
 
 Visit http://localhost:8080.
-test
