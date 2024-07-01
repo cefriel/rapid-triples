@@ -8,23 +8,27 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.1.4",
     "@koumoul/vjsf": "^2.21.3",
     "@sentry/tracing": "^6.2.1",
     "@sentry/vue": "^6.2.1",
     "@vue/compiler-sfc": "^3.1.1",
+    "@zazuko/vue-graph-layout": "^0.1.4",
     "ajv": "^6.12.6",
     "core-js": "^3.6.5",
     "itemsjs": "^2.1.5",
     "jsonpath": "^1.1.1",
     "material-design-icons-iconfont": "^6.7.0",
     "moment": "^2.29.1",
+    "n3": "^1.17.4",
     "nunjucks": "^3.2.4",
+    "prismjs": "^1.24.1",
+    "rdf-ext": "^2.5.2",
     "vue": "^2.6.11",
     "vue-loader": "^15.9.6",
     "vue-resource": "^1.5.2",
     "vue-router": "^3.5.1",
-    "vuetify": "^2.4.0",
-    "prismjs": "^1.24.1"
+    "vuetify": "^2.4.0"
   },
   "devDependencies": {
     "@mdi/font": "^7.1.96",
