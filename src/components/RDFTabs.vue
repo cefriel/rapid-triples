@@ -9,13 +9,16 @@
       </pre>
     </v-tab-item>
     <v-tab-item>
-      <RDFGraph :rdfData="rdfData" />
+<!--      <RDFGraph :rdfData="rdfData" />-->
+      <GraphView :dataset="rdfData" :env="env" />
     </v-tab-item>
   </v-tabs>
 </template>
 
 <script>
 import RDFGraph from './RDFGraph.vue';
+import ResourceCard from "@/components/ResourceCard.vue";
+import GraphView from "@/components/GraphView.vue";
 
 export default {
   name: 'RDFTabs',
@@ -30,6 +33,8 @@ export default {
     },
   },
   components: {
+    GraphView,
+    ResourceCard,
     RDFGraph,
   },
 };

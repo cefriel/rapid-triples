@@ -3,7 +3,7 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import Resource from 'vue-resource';
-import moment from 'moment/src/moment';
+import moment from 'moment';
 
 Vue.config.productionTip = false;
 Vue.use(Resource);
