@@ -9,13 +9,17 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.4",
-    "@koumoul/vjsf": "^2.21.3",
+    "@koumoul/vjsf": "^3.0.0-beta.38",
+    "@mdi/font": "5.9.55",
+    "@rdfjs-elements/rdf-editor": "^0.5.4",
     "@sentry/tracing": "^6.2.1",
     "@sentry/vue": "^6.2.1",
+    "@types/rdfjs__term-set": "^2.0.1",
     "@vue/cli-plugin-typescript": "^5.0.8",
     "@vue/compiler-sfc": "^3.1.1",
     "@zazuko/vue-graph-layout": "^0.1.4",
-    "ajv": "^6.12.6",
+    "ajv": "^8.17.1",
+    "ajv-errors": "^3.0.0",
     "core-js": "^3.6.5",
     "itemsjs": "^2.1.5",
     "jsonpath": "^1.1.1",
@@ -25,40 +29,52 @@
     "nunjucks": "^3.2.4",
     "prismjs": "^1.24.1",
     "rdf-ext": "^2.5.2",
+    "roboto-fontface": "*",
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.3",
     "vue": "^3.0.0",
     "vue-loader": "^16.0.0",
     "vue-resource": "^1.5.2",
-    "vue-router": "^4.0.0",
-    "vuetify": "^3.0.0"
+    "vue-router": "^4.0.13",
+    "vuetify": "^3.6.13",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
+    "@rdfjs/types": "^1.1.0",
+    "@types/webfontloader": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
+    "@vue/eslint-config-typescript": "^13.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.0",
+    "eslint": "^8.26.0",
+    "eslint-plugin-vue": "^8.7.1",
     "raw-loader": "^4.0.2",
+    "rdf-js": "^4.0.2",
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "^2.4.4",
+    "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-template-compiler": "^2.6.11",
-    "webpack-bundle-analyzer": "^4.7.0"
+    "webpack-bundle-analyzer": "^4.7.0",
+    "webpack-plugin-vuetify": "^2.0.0-alpha.0"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "browser": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
+      "plugin:@typescript-eslint/recommended",
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "ecmaVersion": 2020,
+      "parser": "@typescript-eslint/parser",
+      "sourceType": "module"
     },
     "rules": {}
   },

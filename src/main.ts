@@ -1,12 +1,13 @@
-import Vue from 'vue';
-import App from './App.vue';
+import { createApp } from 'vue';
 import vuetify from './plugins/vuetify';
 import router from './router';
-import Resource from 'vue-resource';
+import App from '@/App.vue';
 import moment from 'moment';
+import vueResource from 'vue-resource'; // Updated import for vue-resource
 
-Vue.config.productionTip = false;
-Vue.use(Resource);
+const app = createApp(App);
+
+app.config.globalProperties.$resource = vueResource;
 
 // Set page title
 router.beforeEach((to, from, next) => {
@@ -15,21 +16,19 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
-// Vue functions to be used in templates
-Vue.filter('formatDate', function(value) {
-    if (value) {
-        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+// Global filters
+app.config.globalProperties.$filters = {
+    formatDate(value: string) {
+        if (value) {
+            return moment(String(value)).format('MM/DD/YYYY hh:mm');
+        }
+    },
+    removeUnderscore(value: string) {
+        if (!value) return '';
+        return value.toString().replaceAll('_', ' ');
     }
-});
+};
 
-Vue.filter('remove_underscore', function (value) {
-  if (!value) return ''
-  value = value.toString()
-  return value.replaceAll("_", " ")
-})
-
-new Vue({
-    vuetify,
-    router,
-    render: h => h(App)
-}).$mount('#app')
+app.use(router);
+app.use(vuetify);
+app.mount('#app');

@@ -1,26 +1,23 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import AssetCreate from './components/AssetCreate.vue';
 
-import AssetCreate from './components/AssetCreate.vue'
-
-Vue.use(Router)
-
-
-const router= new Router({
-    mode: 'history',
-    routes: [
-        {
-            path: '/mobilitydcatap-ui/',
-            name: 'asset_create',
-            component: AssetCreate,
-            props: {
-                asset_type : 'mobilityDCAT-AP'
-            },
-            meta: {
-                title: "Cefriel RDF Metadata Generator",
-            }
+const routes = [
+    {
+        path: '/mobilitydcatap-ui/',
+        name: 'asset_create',
+        component: AssetCreate,
+        props: {
+            asset_type: 'mobilityDCAT-AP'
         },
-    ]
-})
+        meta: {
+            title: "Cefriel RDF Metadata Generator",
+        }
+    },
+];
 
-export default router
+const router = createRouter({
+    history: createWebHistory(process.env.BASE_URL),
+    routes
+});
+
+export default router;

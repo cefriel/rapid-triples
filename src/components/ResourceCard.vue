@@ -8,7 +8,7 @@
         </TermTooltip>
       </h3>
       <span class="resource-actions">
-        <slot name="actions" />
+        <slot name="actions"/>
       </span>
     </header>
     <table class="resource-properties">
@@ -22,7 +22,7 @@
         </th>
         <td class="property-row">
           <div v-for="value in property.values" :key="value.value">
-            <Term :term="value" :env="env" />
+            <Term :term="value" :env="env"/>
           </div>
         </td>
       </tr>
@@ -35,15 +35,16 @@
 import Term from './Term.vue'
 import TermTooltip from './TermTooltip.vue'
 
-import { computed } from 'vue'
+import {computed} from 'vue'
 
-import { Link } from '@/model/link.model';
-import { Property, Resource } from '@/model/resource.model';
+import {Property} from '@/model/resource.model';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const props = defineProps()
-
+const props = defineProps<{
+  activeLinks: Array<{ target: string, source: string, sourceProperty: string }>,
+  resource: { id: string }
+}>()
 const isActive = computed(() => {
   return props.activeLinks.some((link) => link.target === props.resource.id)
 })

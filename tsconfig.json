@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": false,
+    "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
     "allowJs": true,
@@ -27,7 +27,8 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],
+    "noImplicitAny": false
   },
   "include": [
     "src/**/*.ts",

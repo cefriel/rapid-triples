@@ -1,9 +1,10 @@
 <template>
-  <GraphLayout class="w-full h-full" :layout-cfg="layoutCfg" :nodes="resources" :links="links" :active-links="activeLinks"
+  <GraphLayout class="w-full h-full" :layout-cfg="layoutCfg" :nodes="resources" :links="links"
+               :active-links="activeLinks"
                :auto-zoom="false" @link-enter="onLinkHover" @link-out="onUnhover">
     <template v-slot:node="{ node }">
       <ResourceCard :resource="node" :active-links="activeLinks" :env="env" @hover-title="onHoverResource"
-                    @unhover-title="onUnhover" @hover-property="onHoverProperty" @unhover-property="onUnhover" />
+                    @unhover-title="onUnhover" @hover-property="onHoverProperty" @unhover-property="onUnhover"/>
     </template>
   </GraphLayout>
   <div id="menu">
@@ -32,20 +33,21 @@
 
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
-import { GraphLayout } from '@zazuko/vue-graph-layout'
+import {computed, ref} from 'vue'
+import {GraphLayout} from '@zazuko/vue-graph-layout'
 import ResourceCard from './ResourceCard.vue'
 import DatasetExt from 'rdf-ext/lib/Dataset'
 
-import { Property, Resource } from '@/model/resource.model';
-import { Link } from '@/model/link.model'
-import { linksFromResources, resourcesFromDataset } from '@/resources-utils'
-import { CogIcon } from '@heroicons/vue/24/solid'
+import {Property, Resource} from '@/model/resource.model';
+import {Link} from '@/model/link.model'
+import {linksFromResources, resourcesFromDataset} from '../resourceUtils'
+import {CogIcon} from '@heroicons/vue/24/solid'
 
 interface Props {
   dataset: DatasetExt,
   env: any
 }
+
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const props = defineProps<Props>()
 
@@ -56,6 +58,7 @@ const activeLinks = ref([])
 function toggleLayoutControls() {
   showlayoutControls.value = !showlayoutControls.value
 }
+
 const showlayoutControls = ref(false)
 const layoutCfg = ref({
   rankdir: 'RL',
