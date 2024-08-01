@@ -5,8 +5,7 @@
       <div class="bg-gray-800 text-white font-normal text-sm rounded py-1 px-3">
         {{ label }}
         <svg class="absolute h-3 w-full left-0 top-full fill-current text-gray-800" viewBox="0 0 255 255">
-          <polygon points="0,0 127.5,127.5 255,0" />
-        </svg>
+<x></x>        </svg>
       </div>
     </div>
     <slot />

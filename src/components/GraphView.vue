@@ -1,9 +1,10 @@
 <template>
-  <div class="graph-container">
-    <GraphLayout class="graph-layout" :layout-cfg="layoutCfg" :nodes="resources" :links="links" :active-links="activeLinks"
+  <div style="height: 100vh; width:100vh" class="graph-container">
+    <GraphLayout class="graph-layout" :layout-cfg="layoutCfg" :nodes="resources" :links="links"
+                 :active-links="activeLinks"
                  :auto-zoom="false" @link-enter="onLinkHover" @link-out="onUnhover">
       <template v-slot:node="{ node }">
-        <ResourceCard :resource="node" :active-links="activeLinks" :env="env" @hover-title="onHoverResource"
+        <ResourceCard :resource="node" :active-links="activeLinks" @hover-title="onHoverResource"
                       @unhover-title="onUnhover" @hover-property="onHoverProperty" @unhover-property="onUnhover"/>
       </template>
     </GraphLayout>
@@ -33,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch, defineProps } from 'vue';
 import { GraphLayout } from '@zazuko/vue-graph-layout';
 import ResourceCard from './ResourceCard.vue';
 import { linksFromResources, resourcesFromDataset } from '@/resourceUtils';
@@ -41,7 +42,6 @@ import { CogIcon } from '@heroicons/vue/24/solid';
 
 interface Props {
   dataset: any; // Use appropriate type if available
-  env: any;
 }
 
 const props = defineProps<Props>();
@@ -53,6 +53,7 @@ const activeLinks = ref([]);
 function toggleLayoutControls() {
   showlayoutControls.value = !showlayoutControls.value;
 }
+
 const showlayoutControls = ref(false);
 const layoutCfg = ref({
   rankdir: 'RL',
@@ -80,6 +81,13 @@ function onHoverProperty(resource, property) {
       link.source === resource.id && link.sourceProperty === property.id
   ));
 }
+
+// Watch for changes in the dataset prop
+watch(() => props.dataset, (newDataset) => {
+  console.log('New dataset:', newDataset);
+  resources.value = resourcesFromDataset(newDataset);
+  links.value = linksFromResources(resources.value);
+});
 </script>
 
 <script lang="ts">

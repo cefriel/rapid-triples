@@ -17,12 +17,12 @@
           @mouseleave="$emit('unhover-property', resource, property)">
         <th class="property-row">
           <TermTooltip :label="property.id">
-            {{ property.name }}
+            {{ property.name.value }}
           </TermTooltip>
         </th>
         <td class="property-row">
           <div v-for="value in property.values" :key="value.value">
-            <Term :term="value" :env="env"/>
+            <Term :term="value"/>
           </div>
         </td>
       </tr>

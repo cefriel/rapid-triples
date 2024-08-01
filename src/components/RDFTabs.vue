@@ -1,25 +1,44 @@
 <template>
-  <v-tabs v-if="rdfData">
-    <v-tab>Turtle Syntax</v-tab>
-    <v-tab>RDF Graph</v-tab>
+  <div>
+    <v-container  >
+      <v-row>
+        <v-col>
+          <v-tabs v-model="activeTab" v-if="rdfData">
+            <v-tab> Turtle Syntax </v-tab>
+            <v-tab> RDF Graph </v-tab>
+          </v-tabs>
+        </v-col>
+      </v-row>
 
-    <v-tab-item>
-      <pre id="rdf-text" class="language-turtle">
-        <code class="language-turtle" v-html="highlightedRdfData"></code>
-      </pre>
-    </v-tab-item>
-    <v-tab-item>
-      <!--      <RDFGraph :rdfData="rdfData" />-->
-      <GraphView :dataset="rdfData" :env="env"/>
-    </v-tab-item>
-  </v-tabs>
+      <v-row>
+        <v-col>
+          <div v-if="activeTab === 0">
+            <pre id="rdf-text" class="language-turtle">
+              <code class="language-turtle" v-html="highlightedRdfData"></code>
+            </pre>
+          </div>
+
+          <div v-if="activeTab === 1">
+            <GraphView :dataset="dataset.value" />
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
 import GraphView from "@/components/GraphView.vue";
+import rdf from 'rdf-ext';
+import ParserN3 from '@rdfjs/parser-n3';
+import { Readable } from 'readable-stream';
+import { ref } from "vue";
 
 export default {
   name: 'RDFTabs',
+  components: {
+    GraphView,
+  },
   props: {
     rdfData: {
       type: String,
@@ -30,8 +49,44 @@ export default {
       required: true,
     },
   },
-  components: {
-    GraphView,
+  setup() {
+    const dataset = ref(rdf.dataset());
+    return {
+      dataset
+    };
+  },
+  data() {
+    return {
+      activeTab: 0,
+    };
+  },
+  watch: {
+    rdfData: {
+      immediate: true,
+      handler(newVal) {
+        this.parseRdfData(newVal);
+      },
+    },
+  },
+  methods: {
+    async parseRdfData(data) {
+      try {
+        const parser = new ParserN3();
+        const input = Readable.from([data]);
+        const quads = [];
+
+        const quadStream = parser.import(input);
+
+        for await (const quad of quadStream) {
+          quads.push(quad);
+        }
+
+        this.dataset.value = rdf.dataset(quads);
+        console.log('Parsed dataset:', this.dataset.value);
+      } catch (error) {
+        console.error('Error parsing RDF data:', error);
+      }
+    },
   },
 };
 </script>

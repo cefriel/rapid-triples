@@ -13,7 +13,6 @@ import {computed} from 'vue'
 
 interface Props {
   term: Term,
-  env: any
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
@@ -41,7 +40,7 @@ function termValue(term: Term): string {
 
 function expandValue(term: Term): string {
   if (term.termType === 'Literal') {
-    const datatype = term.datatype ? `^^${(term.datatype)}` : ''
+    const datatype = term.datatype ? `^^${(term.datatype).value}` : ''
     const language = term.language ? `@${term.language}` : ''
 
     return `${term.value}${datatype}${language}`

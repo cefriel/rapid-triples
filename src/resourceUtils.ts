@@ -5,7 +5,7 @@ import {Link} from "./model/link.model"
 import {Resource} from "./model/resource.model"
 import rdf from 'rdf-ext';
 
-export function resourcesFromDataset(dataset: DatasetExt, env: any): Resource[] {
+export function resourcesFromDataset(dataset: DatasetExt): Resource[] {
     const extractedSubjects = [...dataset].map(quad => quad.subject)
     const extractedObject = [...dataset].filter(
         quad => !quad.predicate.equals(rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'))).map(quad => quad.object).filter(o => o.termType === "BlankNode" || o.termType === "NamedNode")
