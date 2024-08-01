@@ -19,7 +19,7 @@ export function resourcesFromDataset(dataset: DatasetExt, env: any): Resource[] 
                 const property = {
                     id: predicate.value,
                     term: predicate,
-                    name: env.shrink(predicate),
+                    name: predicate,
                     values: new TermSet<Term>(),
                 }
                 acc.set(predicate.value, property)
@@ -27,11 +27,11 @@ export function resourcesFromDataset(dataset: DatasetExt, env: any): Resource[] 
             acc.get(predicate.value).values.add(object)
             return acc
         }, new Map())
-
+        console.log(node.value)
         return {
             id: node.value,
             term: node,
-            name: env.shrink(node),
+            name: node.value,
             properties: [...properties.values()]
         } as Resource
     })
