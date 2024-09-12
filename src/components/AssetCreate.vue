@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageTitle :title="asset_type" :show_breadcrumbs="true" />
+    <PageTitle :title="asset_type" :show_breadcrumbs="true"/>
     <v-row class="px-10 my-2">
       <v-col cols="8" class="py-2">
         <p>
@@ -13,12 +13,12 @@
         </p>
       </v-col>
       <v-col cols="4" class="text-center py-2">
-        <img :src="logoSrc" alt="Company Logo" style="max-height: 100px;" />
+        <img :src="logoSrc" alt="Company Logo" style="max-height: 100px;"/>
       </v-col>
     </v-row>
 
     <Alert v-for="(alert_message, index) in alert_messages" :key="index" :message="alert_message.message"
-           :alert_type="alert_message.alert_type" />
+           :alert_type="alert_message.alert_type"/>
     <v-container>
       <v-row>
         <v-col cols="6">
@@ -30,17 +30,17 @@
                 :options="options"
             />
           </v-form>
-          <p><br /></p>
+          <p><br/></p>
           <v-btn @click="create_object" style="margin-top: 10px;">Generate</v-btn>
         </v-col>
 
         <v-col cols="6">
           <div v-if="saved_asset_rdf">
             <v-btn color="primary" @click="downloadRDF" class="mb-2">Download RDF</v-btn>
-            <RDFTabs :rdfData="saved_asset" :highlightedRdfData="saved_asset_rdf" />
+            <RDFTabs :rdfData="saved_asset" :highlightedRdfData="saved_asset_rdf"/>
           </div>
           <div v-else class="text-center">
-            <img :src="noDataSrc" alt="No Data Available" style="max-width: 60%; height: auto; margin-top: 200px;" />
+            <img :src="noDataSrc" alt="No Data Available" style="max-width: 60%; height: auto; margin-top: 200px;"/>
             <p>Your RDF model will appear here!</p>
           </div>
         </v-col>
@@ -57,7 +57,7 @@ import RDFTabs from './RDFTabs.vue';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-turtle';
 import 'prismjs/themes/prism.css';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import logoPath from '@/assets/logo.png';
 import noDataPath from '@/assets/no_data.png';
 import mdcatap_template from '!!raw-loader!@/assets/mobility-lifting.jinja';
@@ -128,7 +128,7 @@ export default {
       console.log('Schema properties:', Object.keys(this.asset_schema.properties));
     } catch (error) {
       console.error('Error loading schema:', error);
-      this.alert_messages.push({ message: 'Error loading schema', alert_type: 'error' });
+      this.alert_messages.push({message: 'Error loading schema', alert_type: 'error'});
     }
 
     // Verify template engine
@@ -137,7 +137,7 @@ export default {
       console.log('Template engine loaded:', this.template_engine);
     } catch (error) {
       console.error('Error loading template engine:', error);
-      this.alert_messages.push({ message: 'Error loading template engine', alert_type: 'error' });
+      this.alert_messages.push({message: 'Error loading template engine', alert_type: 'error'});
     }
     // Verify template loading
     try {
@@ -145,7 +145,7 @@ export default {
       console.log('Template compiled successfully');
     } catch (error) {
       console.error('Error compiling template:', error);
-      this.alert_messages.push({ message: 'Error compiling template', alert_type: 'error' });
+      this.alert_messages.push({message: 'Error compiling template', alert_type: 'error'});
     }
   },
   methods: {
@@ -159,7 +159,7 @@ export default {
         let textToDownload = rdfElement.textContent || rdfElement.innerText;
         textToDownload = textToDownload.replace(/^\s*\n/gm, '').trim();
 
-        const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+        const blob = new Blob([textToDownload], {type: 'text/plain;charset=utf-8'});
         const url = window.URL.createObjectURL(blob);
 
         const link = document.createElement('a');
@@ -173,7 +173,6 @@ export default {
       }
     },
     set_asset_value(event) {
-      console.log('Asset value updated:', event);
       this.asset = event;
     },
     create_object() {
@@ -189,6 +188,9 @@ export default {
       }*/
 
       // Set vars that are hidden from the user
+      if (!this.asset.header) {
+        this.asset.header = {};
+      }
       this.asset.header.creation_time = new Date().toISOString();
       this.asset.header.last_updated = new Date().toISOString();
       this.asset.header.type = 'Dataset';

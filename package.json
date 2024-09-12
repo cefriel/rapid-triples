@@ -54,7 +54,7 @@
     "autoprefixer": "^10.4.20",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.26.0",
-    "eslint-plugin-vue": "^8.7.1",
+    "eslint-plugin-vue": "^9.0.0",
     "postcss": "^8.4.45",
     "raw-loader": "^4.0.2",
     "rdf-js": "^4.0.2",

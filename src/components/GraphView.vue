@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100vh; width:100vh" class="graph-container">
-    <GraphLayout class="graph-layout" :layout-cfg="layoutCfg" :nodes="resources" :links="links"
+    <GraphLayout class="graph-layout w-full h-full" :layout-cfg="layoutCfg" :nodes="resources" :links="links"
                  :active-links="activeLinks"
                  :auto-zoom="false" @link-enter="onLinkHover" @link-out="onUnhover">
       <template v-slot:node="{ node }">
@@ -35,10 +35,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, defineProps } from 'vue';
-import { GraphLayout } from '@zazuko/vue-graph-layout';
 import ResourceCard from './ResourceCard.vue';
 import { linksFromResources, resourcesFromDataset } from '@/resourceUtils';
 import { CogIcon } from '@heroicons/vue/24/solid';
+import { GraphLayout } from '@zazuko/vue-graph-layout'
 
 interface Props {
   dataset: any; // Use appropriate type if available
