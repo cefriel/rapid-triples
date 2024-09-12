@@ -4,6 +4,7 @@ import router from './router';
 import App from '@/App.vue';
 import moment from 'moment';
 import vueResource from 'vue-resource'; // Updated import for vue-resource
+import './styles/index.css';
 
 const app = createApp(App);
 

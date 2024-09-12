@@ -54,7 +54,6 @@ import JsonForm from './JsonForm.vue';
 import Alert from './Alert.vue';
 import PageTitle from './PageTitle.vue';
 import RDFTabs from './RDFTabs.vue';
-import Ajv from 'ajv';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-turtle';
 import 'prismjs/themes/prism.css';
@@ -64,7 +63,6 @@ import noDataPath from '@/assets/no_data.png';
 import mdcatap_template from '!!raw-loader!@/assets/mobility-lifting.jinja';
 
 // Create a single AJV instance outside of the Vue component
-const ajv = new Ajv({ allErrors: true });
 
 export default {
   name: 'AssetCreate',
@@ -232,21 +230,10 @@ export default {
 </script>
 
 <style scoped>
-.rdf-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
 
 .rdf-container pre {
   width: 100%;
 }
 
-.download-button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-}
+
 </style>
