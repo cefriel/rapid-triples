@@ -16,3 +16,12 @@ docker run -p 8080:80 cefriel/rdform-demo
 ```
 
 Visit http://localhost:8080.
+
+### Update online
+
+Build the image locally and push the updated files in the `dist` folder.
+
+If you built the interface using the Docker container, you can get the required files by obtaining the CONTAINER_ID via `docker ps` and running the following command:
+```sh
+docker cp <CONTAINER_ID>:/usr/share/nginx/html/rdform/. ./dist/
+```
