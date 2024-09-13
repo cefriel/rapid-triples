@@ -27,7 +27,7 @@
       <v-row>
         <v-col cols="6">
           <v-form ref="form" v-model="valid">
-            <JsonForm key="formKey" v-on:update:model="set_asset_value"
+            <JsonForm :key="formKey" :value="asset" v-on:update:model="set_asset_value"
                       v-bind:schema="asset_schema" v-bind:options="options"/>
           </v-form>
           <p><br></p>
@@ -38,8 +38,8 @@
           <div v-if="saved_asset_rdf" class="rdf-container">
             <v-btn color="primary" @click="downloadRDF" class="mb-2">Download RDF</v-btn>
             <pre id="rdf-text" class="language-turtle">
-                            <p class="language-turtle" v-html="saved_asset_rdf"></p>
-                        </pre>
+              <p class="language-turtle" v-html="saved_asset_rdf"></p>
+            </pre>
           </div>
 
           <!-- PDF Upload and Display -->
@@ -56,6 +56,11 @@
             </div>
             <div v-else style="height: 100%;">
               <iframe :src="pdfUrl" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+              <!-- Button to send PDF name -->
+              <v-btn @click="sendPdfName" color="success" class="mt-2">
+                <v-icon left>mdi-api</v-icon>
+                Send PDF
+              </v-btn>
             </div>
           </div>
         </v-col>
@@ -63,6 +68,7 @@
     </v-container>
   </div>
 </template>
+
 
 <style scoped>
 .rdf-container {
@@ -86,12 +92,12 @@
 <script>
 
 import JsonForm from './JsonForm';
-import Alert from './Alert.vue'
+import Alert from './Alert.vue';
 import PageTitle from './PageTitle.vue';
-import Ajv from "ajv"
-import mdcatap_template from 'raw-loader!@/assets/mobility-lifting.jinja'
+import Ajv from "ajv";
+import mdcatap_template from 'raw-loader!@/assets/mobility-lifting.jinja';
 
-const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
+const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
 import Prism from 'prismjs';
 import 'prismjs/components/prism-turtle'; // Import Turtle syntax highlighting
 import 'prismjs/themes/prism.css';
@@ -120,13 +126,14 @@ export default {
       alert_messages: [],
       selectedPdf: null,
       pdfUrl: null,
+      formKey: 0,
       options: {
         ajv: ajv,
         context: {
           languages: require("../assets/languages.json")
         }
       }
-    }
+    };
   },
   mounted() {
     // Asset type schema
@@ -170,6 +177,9 @@ export default {
       }
 
       // Set vars that are hidden from the user
+      if (!this.asset.header) {
+        this.asset.header = {};
+      }
       this.asset.header.creation_time = new Date().toISOString();
       this.asset.header.last_updated = new Date().toISOString();
       this.asset.header.type = "Dataset";
@@ -208,7 +218,64 @@ export default {
       } else {
         this.alert_messages.push({message: 'Please select a valid PDF file.', alert_type: 'error'});
       }
+    },
+    // TODO actually send the pdf instead of just the name and use the correct URL
+    sendPdfName() {
+      if (this.selectedPdf) {
+        // const pdfName = this.selectedPdf.name;
+
+        // Testing API
+        const data = {
+          "content": {
+            "distributions": [],
+            "spatial_coverage": "http://publications.europa.eu/resource/authority/country/ITA",
+            "accrual_periodicity": "Continuously",
+            "mobility_themes": ["Other"]
+          },
+          "header": {
+            "publisher_email": "no-reply@cefriel.com",
+            "publisher_name": "EXTRACTED FROM PDF",
+            "description": "EXTRACTED FROM PDF",
+            "name": "EXTRACTED FROM PDF",
+            "identifier": "EXTRACTED FROM PDF"
+          }
+        };
+
+        fetch('https://echo.zuplo.io/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(responseData => {
+              const body = responseData.body;
+              if (typeof responseData !== 'object') {
+                throw new Error('The response is not a valid JSON object');
+              }
+              // Check if json is valid to given schema
+              const validate = ajv.compile(this.asset_schema);
+              console.log(body)
+
+              const valid = validate(body);
+
+              if (valid) {
+                this.asset = {...body};
+                // Force JsonForm to re-render by updating the formKey
+                this.formKey = Date.now(); // Change the key to trigger re-render
+                this.alert_messages.push({message: 'Data received and filled successfully', alert_type: 'success'});
+              } else {
+                const errors = validate.errors.map(err => `${err.instancePath} ${err.message}`).join(', ');
+                throw new Error(`Schema validation failed: ${errors}`);
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+              this.alert_messages.push({message: `Error: ${error.message}`, alert_type: 'error'});
+            });
+      }
     }
   }
-}
+};
 </script>

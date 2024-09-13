@@ -90,11 +90,11 @@
 	  mobilitydcatap:mobilityTheme mtheme:{{mtheme | lower | replace(" ", "-") | replace("," , "")}};
     {% endfor %}
     {%endif%}
-    {%if '://' in json_content.spatial_coverage %}
-    dcat:spatial <{{json_content.spatial_coverage}}>;
-    {%else%}
-    dcat:spatial """{{json_content.spatial_coverage}}""";
-    {%endif%}
+    {% if json_content.spatial_coverage is string and '://' in json_content.spatial_coverage %}
+      dcat:spatial <{{json_content.spatial_coverage}}>;
+    {% else %}
+      dcat:spatial """{{json_content.spatial_coverage}}""";
+    {% endif %}
     {%if json_content.spatial_aggregation%}
     dcat:spatialResolutionInMeters """{{json_content.spatial_aggregation}}""";
     {%endif%}
