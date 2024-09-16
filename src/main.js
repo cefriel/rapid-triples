@@ -6,6 +6,8 @@ import Resource from 'vue-resource';
 import moment from 'moment/src/moment';
 
 Vue.config.productionTip = false;
+Vue.config.ignoredElements = ['rdf-editor']
+
 Vue.use(Resource);
 
 // Set page title
