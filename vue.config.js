@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-    publicPath: process.env.NODE_ENV === "production" ? "/mobilitydcatap-ui/" : "/",
+    publicPath: process.env.NODE_ENV === "production" ? "/rdform-demo/" : "/",
     transpileDependencies: [
         "vuetify",
         "@koumoul/vjsf"

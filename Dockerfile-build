@@ -22,7 +22,7 @@ RUN npm run build
 FROM nginx:1.16.0-alpine
 
 # copy artifact build from the 'build environment'
-COPY --from=build /app/dist /usr/share/nginx/html/mobilitydcatap-ui/
+COPY --from=build /app/dist /usr/share/nginx/html/rdform-demo/
 
 # expose port 80
 EXPOSE 80

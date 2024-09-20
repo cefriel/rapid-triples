@@ -10,11 +10,11 @@ const router= new Router({
     mode: 'history',
     routes: [
         {
-            path: '/mobilitydcatap-ui/',
+            path: '/rdform-demo/',
             name: 'asset_create',
             component: AssetCreate,
             props: {
-                asset_type : 'mobilityDCAT-AP'
+                asset_type : 'MyRDFClass'
             },
             meta: {
                 title: "Cefriel RDF Metadata Generator",
