@@ -1,16 +1,12 @@
 <template>
-
   <div>
     <PageTitle :title="asset_type" :show_breadcrumbs="true"/>
     <v-row class="px-10 my-2">
       <v-col cols="8" class="py-2">
-        <p><b>Fill the form with all the metadata and download the RDF</b> representation using <a
-            href="https://w3id.org/mobilitydcat-ap/">mobilityDCAT-AP</a>. Test and experiment to learn how different
-          information should be described in RDF according to the mobilityDCAT-AP specification. The form is compliant
-          with the minimum profile required by mobilityDCAT-AP.<br><br>
+        <p>Fill the form with all the metadata and download the corresponding RDF. Test and experiment to learn how different
+          information should be described in RDF according to the considered specification.<br><br>
           The page is client-side only so all the information inserted are not collected/stored but can not be retrieved
-          if the page is reloaded. The output RDF can be converted to different serializations using online converters
-          such as <a href="https://rdfshape.weso.es/dataConvert">RDFShape</a>.<br><br>
+          if the page is reloaded. The output RDF can be converted to different serializations.<br><br>
           This page is powered by <b>KCONG (Knowledge Catalogue and Governance)</b> a complete (meta)data catalogue
           solution developed by <a href="https://www.cefriel.com/">Cefriel</a>. If you want to know more visit <a
               href="https://kcong.cefriel.com/">https://kcong.cefriel.com/</a>.</p>
@@ -19,7 +15,6 @@
         <img src="@/assets/logo.png" alt="Company Logo" style="max-height: 100px;">
       </v-col>
     </v-row>
-
 
     <Alert v-for="(alert_message, index) in alert_messages" :key="index" :message="alert_message.message"
            :alert_type="alert_message.alert_type"/>
@@ -36,10 +31,28 @@
 
         <v-col cols="6">
           <div v-if="saved_asset_rdf" class="rdf-container">
+            <!-- Dropdown to select format -->
+            <v-select
+                v-model="selectedFormat"
+                :items="formats"
+                label="Select RDF Format"
+                class="mb-3"
+            ></v-select>
+
+            <rdf-editor
+                class="h-full overflow-hidden"
+                :value.prop="saved_asset_rdf"
+                :format="selectedFormat"
+                :readonly=true
+                :prefixes="editorPrefixes"
+                auto-parse
+                parse-delay="1000"
+                @parsing-failed="onParsingFailed"
+                @prefixes-parsed="onPrefixesParsed"
+                @serialized="onSerialized"
+            ></rdf-editor>
+
             <v-btn color="primary" @click="downloadRDF" class="mb-2">Download RDF</v-btn>
-            <pre id="rdf-text" class="language-turtle">
-              <p class="language-turtle" v-html="saved_asset_rdf"></p>
-            </pre>
           </div>
 
           <!-- PDF Upload and Display -->
@@ -69,39 +82,19 @@
   </div>
 </template>
 
-
-<style scoped>
-.rdf-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.rdf-container pre {
-  width: 100%;
-}
-
-.download-button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-}
-</style>
 <script>
-
 import JsonForm from './JsonForm';
 import Alert from './Alert.vue';
 import PageTitle from './PageTitle.vue';
-import Ajv from "ajv";
-import mdcatap_template from 'raw-loader!@/assets/mobility-lifting.jinja';
 
+import Ajv from "ajv";
 const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
-import Prism from 'prismjs';
-import 'prismjs/components/prism-turtle'; // Import Turtle syntax highlighting
-import 'prismjs/themes/prism.css';
-import {v4 as uuidv4} from 'uuid';
+
+import form_template from 'raw-loader!@/assets/form-lifting.jinja';
+import '@rdfjs-elements/rdf-editor';
+import { parsers } from '@rdf-esm/formats-common'; // Updated
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default {
   name: 'AssetCreate',
@@ -110,23 +103,26 @@ export default {
     PageTitle,
     Alert
   },
-  props: {
-    asset_type: String,
-  },
+  props: ['asset_type'],
   data() {
     return {
       template_engine: null,
       template: null,
       valid: null,
-      saved_asset_rdf: null,
       asset_schema: {},
       initial_asset: {},
       asset: {},
       saved_asset: {},
+      saved_asset_rdf: null,
+      serialized_rdf: null,
       alert_messages: [],
       selectedPdf: null,
       pdfUrl: null,
       formKey: 0,
+      parseError: null,
+      formats: [...parsers.keys()],
+      selectedFormat: 'text/turtle', // Default format
+      editorPrefixes: null,
       options: {
         ajv: ajv,
         context: {
@@ -136,39 +132,59 @@ export default {
     };
   },
   mounted() {
-    // Asset type schema
-    this.asset_schema = require("@/assets/mobilityDCAT-AP.json");
+    this.asset_schema = require("@/assets/form.json");
     this.template_engine = require('nunjucks');
-    this.template = this.template_engine.compile(mdcatap_template);
+    this.template = this.template_engine.compile(form_template);
   },
   methods: {
-    downloadRDF() {
-      if (!this.saved_asset_rdf) return;
-
-      const rdfElement = document.getElementById('rdf-text');
-
-      if (rdfElement) {
-        let textToDownload = rdfElement.textContent || rdfElement.innerText;
-
-        textToDownload = textToDownload.replace(/^\s*\n/gm, "").trim();
-
-        const blob = new Blob([textToDownload], {type: 'text/plain;charset=utf-8'});
-        const url = window.URL.createObjectURL(blob);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'rdf-data.ttl');
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+    onParsingFailed(e) {
+      console.error('Parsing failed:', e.detail.error);
+      this.parseError = e.detail.error;
+    },
+    onPrefixesParsed(e) {
+      // Supported prefixes at https://github.com/zazuko/rdf-vocabularies/tree/master/ontologies
+      if (!this.editorPrefixes) {
+        this.editorPrefixes = Object.keys(e.detail.prefixes).join(",");
       }
     },
-    set_asset_value: function (event) {
+    onSerialized(e) {
+      this.serialized_rdf = e.detail.value;
+    },
+    downloadRDF() {
+      if (!this.serialized_rdf) {
+        this.alert_messages.push({message: 'No RDF content to download.', alert_type: 'error'});
+        return;
+      }
+
+      const formatToExtension = {
+        'text/turtle': 'ttl',
+        'application/ld+json': 'jsonld',
+        'application/rdf+xml': 'rdf',
+        'application/trig': 'trig',
+        'application/n-triples': 'nt',
+        'application/n-quads': 'nq',
+        'text/n3': 'n3',
+      };
+
+      const fileExtension = formatToExtension[this.selectedFormat] || 'ttl';
+
+      const blob = new Blob([this.serialized_rdf], {type: this.selectedFormat});
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `rdf-data.${fileExtension}`);
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    },
+
+    set_asset_value(event) {
       this.asset = event;
     },
-    create_object: function () {
+    create_object() {
       this.$refs.form.validate();
       if (!this.valid) {
         this.alert_messages.push({message: 'Validation error', alert_type: 'error'});
@@ -176,27 +192,26 @@ export default {
         this.alert_messages = [];
       }
 
-      // Set vars that are hidden from the user
       if (!this.asset.header) {
         this.asset.header = {};
       }
       this.asset.header.creation_time = new Date().toISOString();
       this.asset.header.last_updated = new Date().toISOString();
-      this.asset.header.type = "Dataset";
+      this.asset.header.type = this.asset_type;
       this.asset.header.id = uuidv4();
 
       function slugify(str) {
-        return String(str).normalize('NFKD') // split accented characters into their base characters and diacritical
-            .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
-            .trim() // trim leading or trailing whitespace
-            .toLowerCase() // convert to lowercase
-            .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
-            .replace(/\s+/g, '-') // replace spaces with hyphens
-            .replace(/-+/g, '-'); // remove consecutive hyphens
+        return String(str).normalize('NFKD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
       }
 
       try {
-        this.saved_asset = this.template.render({
+        this.saved_asset_rdf = this.template.render({
           obj: this.asset,
           data_platform_url: "https://kcong.cefriel.com/",
           slugify: slugify
@@ -204,8 +219,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      this.saved_asset = this.saved_asset.replace(/^\s*\n/gm, "");
-      this.saved_asset_rdf = Prism.highlight(this.saved_asset, Prism.languages.turtle, 'turtle');
+      this.saved_asset_rdf = this.saved_asset_rdf.replace(/^\s*\n/gm, "");
     },
     selectFile() {
       this.$refs.pdfInput.click();
@@ -219,18 +233,11 @@ export default {
         this.alert_messages.push({message: 'Please select a valid PDF file.', alert_type: 'error'});
       }
     },
-    // TODO actually send the pdf instead of just the name and use the correct URL
     sendPdfName() {
       if (this.selectedPdf) {
-        // const pdfName = this.selectedPdf.name;
-
-        // Testing API
         const data = {
           "content": {
             "distributions": [],
-            "spatial_coverage": "http://publications.europa.eu/resource/authority/country/ITA",
-            "accrual_periodicity": "Continuously",
-            "mobility_themes": ["Other"]
           },
           "header": {
             "publisher_email": "no-reply@cefriel.com",
@@ -254,7 +261,6 @@ export default {
               if (typeof responseData !== 'object') {
                 throw new Error('The response is not a valid JSON object');
               }
-              // Check if json is valid to given schema
               const validate = ajv.compile(this.asset_schema);
               console.log(body)
 
@@ -262,8 +268,7 @@ export default {
 
               if (valid) {
                 this.asset = {...body};
-                // Force JsonForm to re-render by updating the formKey
-                this.formKey = Date.now(); // Change the key to trigger re-render
+                this.formKey = Date.now();
                 this.alert_messages.push({message: 'Data received and filled successfully', alert_type: 'success'});
               } else {
                 const errors = validate.errors.map(err => `${err.instancePath} ${err.message}`).join(', ');

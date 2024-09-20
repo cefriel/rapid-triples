@@ -1,0 +1,94 @@
+{
+    "type": "object",
+    "properties": {
+    "header": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "identifier": {
+                "type": "string",
+                "title": "Identifier",
+                "description": "Identifier of the data source.",
+                "default": "MY_DATASOURCE"
+            },
+            "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Name of the data source",
+                "default": "My Data Source"
+            },
+            "description": {
+                "type": "string",
+                "title": "Description",
+                "description": "Description of the data contained in the data source",
+                "default": "My Data Source contains data about things."
+            },
+            "publisher_name": {
+                "type": "string",
+                "title": "Publisher name",
+                "description": "Name of the entity providing the data source",
+                "default": "Cefriel Data Publisher"
+            },
+            "publisher_email": {
+                "title": "Publisher email",
+                "type": "string",
+                "description": "Email of the entity providing the data source",
+                "default": "no-reply@cefriel.com"
+            },
+            "access_url": {
+                "type": "string",
+                "title": "Access URL",
+                "x-display": "hidden"
+            },
+            "creation_time": {
+                "type": "string",
+                "title": "Creation date",
+                "x-display": "hidden"
+            },
+            "last_updated": {
+                "type": "string",
+                "title": "Modification time",
+                "x-display": "hidden"
+            },
+            "type": {
+                "type": "string",
+                "title": "Type",
+                "x-display": "hidden"
+            },
+            "id": {
+                "type": "string",
+                "title": "Identifier",
+                "x-display": "hidden"
+            }
+        }
+    },
+    "content":  {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "distributions": {
+                "title": "Distributions",
+                "description": "A specific representation of a Dataset.",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "format": {
+                            "type": "string",
+                            "description": "The format used to encode the data in the distribution. The vocabulary http://publications.europa.eu/resource/dataset/file-type is recommended to serialise the admissible values ",
+                            "title": "Resource format",
+                            "default": "http://publications.europa.eu/resource/authority/file-type/CSV"
+                        },
+                        "access_url": {
+                            "type": "string",
+                            "title": "Access URL.",
+                            "description": "URL redirecting to a webpage or an endpoint to access the data.",
+                            "default": "http://www.cefriel.com/data/my_data_source"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+}

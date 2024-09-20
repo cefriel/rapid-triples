@@ -1,0 +1,80 @@
+{%- set prefix="https://knowledge.c-innovationhub.com/cefriel/data/" -%}
+{%- set dcat_content = obj.header -%}
+{%- set json_content = obj.content -%}
+{%- set asset_name = slugify(dcat_content.name) -%}
+{%- set asset_type = dcat_content.type -%}
+{%- set asset_id = '<' + prefix + asset_type + '#' + asset_name + '>' -%}
+{%- set catalogue_id= '<' + prefix + 'CefrielDataCatalogue#' + asset_type + '>' -%}
+{%- set catalogue_record_id = '<' + prefix + 'CefrielDataCatalogueRecord/' + asset_type + '#' + asset_name + '>' -%}
+{%- set asset_type_url = data_platform_url + '/assets/' + asset_name -%}
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <https://www.w3.org/ns/dcat#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+{{catalogue_id | safe}} rdf:type dcat:Catalog;
+	dcterms:title "Cefriel RDF Form-based Generator";
+	dcterms:description "Cefriel RDF Form-based Generator powered by KCONG"@en;
+	dcterms:publisher [
+	    rdf:type foaf:Agent;
+	    foaf:name "Data Publisher";
+	    foaf:mbox "no-reply@cefriel.com";
+	];
+	dcterms:dataset {{asset_id | safe}};
+	dcat:record {{catalogue_record_id | safe}};
+	foaf:homepage <https://kcong.cefriel.com/>.
+
+
+{{catalogue_record_id | safe}} rdf:type dcat:CatalogRecord ;
+	dcterms:modified "{{dcat_content.last_updated}}"^^xsd:dateTime ;
+	dcterms:created "{{dcat_content.creation_time}}"^^xsd:dateTime ;
+	foaf:primaryTopic {{asset_id  | safe}} .
+
+
+{{asset_id | safe}} rdf:type dcat:Dataset;
+    dcterms:identifier """{{dcat_content.identifier}}""";
+    dcterms:title "{{dcat_content.name}}";
+    {%if dcat_content.publisher_name or dcat_content.publisher_email %}
+    dcterms:publisher [
+	    rdf:type foaf:Agent;
+      {%if dcat_content.publisher_name %}
+	    foaf:name "{{dcat_content.publisher_name}}";
+      {%endif%}
+      {%if dcat_content.publisher_email %}
+	    foaf:mbox "{{dcat_content.publisher_email}}";
+      {%endif%}
+    ];
+    {%endif%}
+
+    {%-if json_content.source_asset.id-%}
+    dcterms:source <{{json_content.source_asset.id}}>;
+    {%-endif-%}
+
+    dcterms:description """{{dcat_content.description}}""" .
+
+
+  {%if json_content.distributions %}
+  {%- for distribution in json_content.distributions -%}
+  {%- set distribution_id = '<' + prefix + asset_type + '/Distribution#' + asset_name + '-' + loop.index + '>' -%}
+  {{asset_id | safe}} dcat:distribution {{distribution_id | safe}} .
+
+  {{distribution_id | safe}} rdf:type dcat:Distribution;
+    dcterms:format "{{distribution.format}}";
+	  {%-if json_content.data_sample -%}
+    {%- for sample in json_content.data_sample -%}
+    adms:sample [
+      rdf:type dcat:Distribution;
+      dcat:downloadURL <{{sample.url}}>;
+      {%-if sample.sample_description -%}
+      dcterms:description """{{sample.sample_description}}"""
+      {%- endif -%}
+    ];
+    {%- endfor -%}
+	  {%- endif -%}
+	dcat:accessURL <{{distribution.access_url}}> .
+  {%- endfor -%}
+  {%- endif -%}
