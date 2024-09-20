@@ -19,9 +19,6 @@ Visit http://localhost:8080.
 
 ### Update online
 
-Build the image locally and push the updated files in the `dist` folder.
+Build the image locally and push the updated files in the `dist` folder using the `publish.sh` script.
 
-If you built the interface using the Docker container, you can get the required files by obtaining the CONTAINER_ID via `docker ps` and running the following command:
-```sh
-docker cp <CONTAINER_ID>:/usr/share/nginx/html/rdform/. ./dist/
-```
+The scripts builds the interface using the Docker container, and copies the required files in the `dist` folder running an instance of the container.
