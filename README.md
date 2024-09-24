@@ -1,4 +1,4 @@
-# rdform
+# rapid-triples
 
 Generate RDF using a form-based interface.
 Fork the template and configure it with your own form.
@@ -7,12 +7,12 @@ Fork the template and configure it with your own form.
 
 Build the image
 ```sh
-docker build -f Dockerfile-build --no-cache -t cefriel/rdform-demo .
+docker build -f Dockerfile-build --no-cache -t cefriel/rapid-triples .
 ```
 
 Run the image
 ```sh
-docker run -p 8080:80 cefriel/rdform-demo
+docker run -p 8080:80 cefriel/rapid-triples
 ```
 
 Visit http://localhost:8080.

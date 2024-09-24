@@ -10,7 +10,7 @@ const router= new Router({
     mode: 'history',
     routes: [
         {
-            path: '/rdform-demo/',
+            path: '/rapid-triples/',
             name: 'asset_create',
             component: AssetCreate,
             props: {

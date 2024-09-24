@@ -19,7 +19,7 @@
         name: 'App',
         data() {
             return {
-                app_name: 'Cefriel RDF Metadata Generator',
+                app_name: 'rapid-triples: RDF Form-based Generator',
                 app_logo: require('@/assets/cefriel_clogo.png'),
                 path_items: [],
             }
