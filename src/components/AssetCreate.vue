@@ -54,28 +54,6 @@
 
             <v-btn color="primary" @click="downloadRDF" class="mb-2">Download RDF</v-btn>
           </div>
-
-          <!-- PDF Upload and Display -->
-          <div v-else class="text-center" style="height: 85vh;">
-            <div v-if="!selectedPdf">
-              <img src="@/assets/upload_pdf.png" alt="No Data Available"
-                   style="max-width: 60%; height: auto; margin-top: 200px;">
-              <p>Choose a PDF to display the preview in this area!</p>
-              <v-btn @click="selectFile" color="primary" class="mt-2">
-                <v-icon left>mdi-upload</v-icon>
-                Select PDF
-              </v-btn>
-              <input ref="pdfInput" type="file" accept="application/pdf" style="display:none" @change="onFileSelected">
-            </div>
-            <div v-else style="height: 100%;">
-              <iframe :src="pdfUrl" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-              <!-- Button to send PDF name -->
-              <v-btn @click="sendPdfName" color="success" class="mt-2">
-                <v-icon left>mdi-api</v-icon>
-                Send PDF
-              </v-btn>
-            </div>
-          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -220,66 +198,6 @@ export default {
         console.log(error);
       }
       this.saved_asset_rdf = this.saved_asset_rdf.replace(/^\s*\n/gm, "");
-    },
-    selectFile() {
-      this.$refs.pdfInput.click();
-    },
-    onFileSelected(event) {
-      const file = event.target.files[0];
-      if (file && file.type === "application/pdf") {
-        this.selectedPdf = file;
-        this.pdfUrl = URL.createObjectURL(file);
-      } else {
-        this.alert_messages.push({message: 'Please select a valid PDF file.', alert_type: 'error'});
-      }
-    },
-    sendPdfName() {
-      if (this.selectedPdf) {
-        const data = {
-          "content": {
-            "distributions": [],
-          },
-          "header": {
-            "publisher_email": "no-reply@cefriel.com",
-            "publisher_name": "EXTRACTED FROM PDF",
-            "description": "EXTRACTED FROM PDF",
-            "name": "EXTRACTED FROM PDF",
-            "identifier": "EXTRACTED FROM PDF"
-          }
-        };
-
-        fetch('https://echo.zuplo.io/post', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-            .then(response => response.json())
-            .then(responseData => {
-              const body = responseData.body;
-              if (typeof responseData !== 'object') {
-                throw new Error('The response is not a valid JSON object');
-              }
-              const validate = ajv.compile(this.asset_schema);
-              console.log(body)
-
-              const valid = validate(body);
-
-              if (valid) {
-                this.asset = {...body};
-                this.formKey = Date.now();
-                this.alert_messages.push({message: 'Data received and filled successfully', alert_type: 'success'});
-              } else {
-                const errors = validate.errors.map(err => `${err.instancePath} ${err.message}`).join(', ');
-                throw new Error(`Schema validation failed: ${errors}`);
-              }
-            })
-            .catch(error => {
-              console.error("Error:", error);
-              this.alert_messages.push({message: `Error: ${error.message}`, alert_type: 'error'});
-            });
-      }
     }
   }
 };
