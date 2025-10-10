@@ -3,6 +3,10 @@
 Generate RDF using a form-based interface.
 Fork the template and configure it with your own form.
 
+### Customize
+
+The form can be customised by simply modifying the JSON Schema (`form.json`) and the lifting template (`form-lifting.jinja`) in the `src/assets` folder. The tool accepts all valid JSON Schemas but can be further configured following the documentation of the underlying `vuetify-jsonschema-form` library available [here](https://koumoul-dev.github.io/vuetify-jsonschema-form/2.x/). The template follows the Jinja notation as supported by the `nunjucks` library ([documentation](https://mozilla.github.io/nunjucks/)).
+
 ### Run it locally
 
 Build the image
