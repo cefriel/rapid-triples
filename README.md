@@ -19,7 +19,7 @@ Run the image
 docker run -p 8080:80 cefriel/rapid-triples
 ```
 
-Visit http://localhost:8080.
+Visit http://localhost:8080/rapid-triples/.
 
 ### Update online
 
