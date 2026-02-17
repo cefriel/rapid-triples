@@ -27,6 +27,12 @@ Build the image locally and push the updated files in the `dist` folder using th
 
 The scripts builds the interface using the Docker container, and copies the required files in the `dist` folder running an instance of the container.
 
+### Cite as
+
+If you use `rapid-triples` for publications, cite the following article: 
+
+> Scrocca M., Carenini A., Carriero V. & Celino I. (2025). `rapid-triples: Adaptive Forms for Semi-automatic Knowledge Collection in RDF`. In: 1st Workshop on Bridging Hybrid Intelligence and the Semantic Web (HAIBRIDGE 2025) co-located with the 24th International Semantic Web Conference (ISWC 2025). CEUR-WS. [https://ceur-ws.org/Vol-3718/paper3.pdf](https://ceur-ws.org/Vol-4093/Paper4hai.pdf)
+
 ### Contributing
 
 Before contributing, please read carefully, complete and sign our [Contributor Licence Agreement](https://github.com/cefriel/contributing/blob/main/contributor-license-agreement.pdf). 
