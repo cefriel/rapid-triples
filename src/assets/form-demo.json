@@ -1,0 +1,131 @@
+{
+  "type": "object",
+  "layout": "tabs",
+  "properties": {
+    "header": {
+      "title": "General",
+      "type": "object",
+      "layout": {
+        "options": {
+          "readOnlyPropertiesMode": "hide"
+        }
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Resource name",
+          "default": "[RESOURCE NAME]",
+          "description": "Name used to generate the resource IRI."
+        },
+        "description": {
+          "type": "string",
+          "layout": "textarea",
+          "title": "Description",
+          "description": "Free-text description of the resource."
+        },
+        "keyword": {
+          "type": "array",
+          "title": "Keywords",
+          "description": "Keywords for the resource. Type and press Enter.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "category": {
+          "type": "string",
+          "title": "Category",
+          "examples": ["Equipment", "Process", "Safety", "Maintenance"]
+        },
+        "id": {
+          "title": "Identifier",
+          "type": "string",
+          "readOnly": true
+        },
+        "creation_time": {
+          "title": "Created",
+          "type": "string",
+          "readOnly": true
+        },
+        "last_updated": {
+          "title": "Last updated",
+          "type": "string",
+          "readOnly": true
+        },
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "content": {
+      "title": "Content",
+      "type": "object",
+      "properties": {
+        "sections": {
+          "type": "array",
+          "title": "Sections",
+          "description": "Add one or more content sections.",
+          "items": {
+            "$ref": "#/$defs/section"
+          }
+        },
+        "notes": {
+          "type": "string",
+          "layout": "textarea",
+          "title": "Additional notes"
+        }
+      }
+    },
+    "contacts": {
+      "title": "Contacts",
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string",
+          "title": "Author"
+        },
+        "email": {
+          "type": "string",
+          "title": "Contact e-mail",
+          "format": "email"
+        },
+        "organization": {
+          "type": "string",
+          "title": "Organization",
+          "examples": ["Cefriel", "Politecnico di Milano"]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "required": ["title"],
+      "layout": {
+        "switch": [
+          {
+            "if": "summary",
+            "children": ["title"]
+          }
+        ]
+      },
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Section title"
+        },
+        "body": {
+          "type": "string",
+          "layout": "textarea",
+          "title": "Section body"
+        },
+        "priority": {
+          "type": "string",
+          "title": "Priority",
+          "enum": ["Low", "Medium", "High"]
+        }
+      }
+    }
+  }
+}

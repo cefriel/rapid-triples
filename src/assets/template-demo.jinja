@@ -1,0 +1,71 @@
+{%- set prefix="https://knowledge.c-innovationhub.com/cefriel/resource/" -%}
+{%- set header = obj.header -%}
+{%- set content = obj.content -%}
+{%- set contacts = obj.contacts -%}
+{%- set resource_name = slugify(header.name) -%}
+{%- set resource_id = '<' + prefix + header.type + '#' + resource_name + '>' -%}
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcat: <https://www.w3.org/ns/dcat#> .
+@prefix res: <https://knowledge.c-innovationhub.com/cefriel/resource/ontology#> .
+
+# Resource: {{header.name}}
+{{resource_id | safe}} rdf:type res:Resource ;
+    dcterms:identifier "{{header.id}}" ;
+    dcterms:title "{{header.name}}" ;
+    {%- if header.description %}
+    dcterms:description """{{header.description}}""" ;
+    {%- endif %}
+    {%- if header.category %}
+    res:category "{{header.category}}" ;
+    {%- endif %}
+    {%- for kw in header.keyword %}
+    dcat:keyword "{{kw}}" ;
+    {%- endfor %}
+    dcterms:created "{{header.creation_time}}"^^xsd:dateTime ;
+    dcterms:modified "{{header.last_updated}}"^^xsd:dateTime .
+
+{%- if contacts and contacts.author %}
+
+# Contact
+{{resource_id | safe}} dcterms:creator [
+    rdf:type foaf:Person ;
+    foaf:name "{{contacts.author}}"
+    {%- if contacts.email %} ;
+    foaf:mbox <mailto:{{contacts.email}}>
+    {%- endif %}
+    {%- if contacts.organization %} ;
+    foaf:member [
+        rdf:type foaf:Organization ;
+        foaf:name "{{contacts.organization}}"
+    ]
+    {%- endif %}
+] .
+{%- endif %}
+
+{%- if content and content.sections %}
+{%- for section in content.sections %}
+
+# Section: {{section.title}}
+<{{prefix}}section#{{resource_name}}-{{loop.index}}> rdf:type res:Section ;
+    dcterms:title "{{section.title}}" ;
+    res:order {{loop.index}} ;
+    {%- if section.body %}
+    res:body """{{section.body}}""" ;
+    {%- endif %}
+    {%- if section.priority %}
+    res:priority "{{section.priority}}" ;
+    {%- endif %}
+    res:partOf {{resource_id | safe}} .
+{%- endfor %}
+{%- endif %}
+
+{%- if content and content.notes %}
+
+# Notes
+{{resource_id | safe}} rdfs:comment """{{content.notes}}""" .
+{%- endif %}
