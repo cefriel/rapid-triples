@@ -14,6 +14,13 @@ const formsRegistry: Record<string, FormConfig> = {
     template: () => import('./template-demo.jinja?raw').then((m) => m.default),
     templateFormat: 'text/turtle',
   },
+  demo2: {
+    label: 'Demo 2',
+    rdfClass: 'Resource',
+    schema: () => import('./form-demo.json').then((m) => m.default as Record<string, unknown>),
+    template: () => import('./template-demo.jinja?raw').then((m) => m.default),
+    templateFormat: 'text/turtle',
+  }
 }
 
 export function getFormConfig(key: string): FormConfig | undefined {
