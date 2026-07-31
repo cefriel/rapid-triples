@@ -35,6 +35,47 @@ Open [http://localhost:3000](http://localhost:3000).
 
 The form can be customised by modifying the JSON Schema and the lifting template in the `src/assets` folder. The tool accepts all valid JSON Schemas and can be further configured following the documentation of the underlying `vuetify-jsonschema-form` library available [here](https://koumoul-dev.github.io/vuetify-jsonschema-form/latest/). The template follows the Jinja notation as supported by the `nunjucks` library ([documentation](https://mozilla.github.io/nunjucks/)).
 
+rapid-triples supports registering more than one form in `src/assets/forms-config.ts`. When more than one entry is present, a **Form type** dropdown automatically appears in the toolbar so users can switch between forms. When only one form is registered the dropdown is hidden and that form loads directly.
+
+Form data is persisted separately in `localStorage` for each form key, so switching forms never loses unsaved work.
+
+## Branding
+
+Edit `src/config/branding.ts` to change the application's visual identity and global settings.
+
+- Replace `public/logo.png` with your own file to change the app-bar logo.
+- `primary` and `secondary` accept any CSS colour value supported by Vuetify.
+- `locale` and `vocabularyLabelLang` are described in detail in the sections below.
+
+## Localisation
+
+The UI language is controlled by `brand.locale` in `src/config/branding.ts`:
+
+- **Auto-detect** (default): leave `locale` as `undefined` — the app reads `navigator.language` from the browser and uses the closest available bundle.
+- **Fixed locale**: set `locale: 'it'` to always display Italian regardless of browser settings.
+
+English (`en`) and Italian (`it`) are included out of the box. To add a new language:
+
+1. Add an entry to `bundles` in `src/assets/messages.ts`, keyed by its language tag:
+
+2. Set `brand.locale'` in `src/config/branding.ts`, or leave it `undefined` to rely on browser auto-detection.
+
+If a bundle is not found for the detected locale, the app falls back to English. All translatable keys are declared in the `Messages` interface at the top of `messages.ts`.
+
+## Controlled Vocabularies
+
+rapid-triples can populate form dropdowns from SKOS RDF/XML vocabulary files without any backend. Each vocabulary is loaded at startup and injected into the form context so Nunjucks templates can map selected labels to their full IRIs.
+
+### Adding a Vocabulary
+
+1. **Place the SKOS RDF/XML file** under `public/vocabularies/` (e.g. `public/vocabularies/licenses.rdf`). The file must use the standard SKOS namespace (`http://www.w3.org/2004/02/skos/core#`) and include `skos:prefLabel` elements for each concept. Fully-qualified URLs are also accepted as sources.
+
+2. **Register the vocabulary** in `src/assets/vocabularies.ts` by adding an entry to the `VOCABULARIES` array. Multiple source files are merged and deduplicated by IRI before being sorted alphabetically.
+
+3. **Reference in your JSON Schema or template** via `rootData.<vocabulary>` options or directly in the Nunjucks template using `context.vocabularies['<vocabulary>']`. The parsed entries are available with `label` (`skos:prefLabel`, capitalised), `iri`, `broaderIris` (array of broader concept IRIs `skos:broader`)
+
+> **Tip:** Set `brand.vocabularyLabelLang` in `src/config/branding.ts` to prefer labels in a specific language (e.g. `'it'`) when the vocabulary contains multi-language `skos:prefLabel` values.
+
 ## Docker Deployment
 
 Build the image:

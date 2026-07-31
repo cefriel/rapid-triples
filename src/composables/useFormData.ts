@@ -1,10 +1,11 @@
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
 
 const STORAGE_PREFIX = 'rapid-triples:formData:'
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unknown>>) {
   const loaded = ref(false)
+  let autoSaveStopHandle: WatchStopHandle | null = null
 
   function storageKey() {
     return STORAGE_PREFIX + formKey.value
@@ -28,7 +29,9 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
   }
 
   function autoSave() {
-    watch(
+    if (autoSaveStopHandle) return
+
+    autoSaveStopHandle = watch(
       model,
       () => {
         if (!loaded.value) return
@@ -41,9 +44,7 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
 
   function init() {
     const saved = loadSaved()
-    if (saved) {
-      model.value = saved
-    }
+    model.value = saved ?? {}
     loaded.value = true
     autoSave()
   }
