@@ -34,6 +34,7 @@
         "category": {
           "type": "string",
           "title": "Category",
+          "layout": { "cols": 6 },
           "examples": ["Equipment", "Process", "Safety", "Maintenance"]
         },
         "id": {
@@ -81,9 +82,19 @@
       "title": "Contacts",
       "type": "object",
       "properties": {
-        "author": {
+        "name": {
           "type": "string",
-          "title": "Author"
+          "title": "Author Name",
+          "layout": {
+            "cols": 6
+          }
+        },
+        "surname": {
+          "type": "string",
+          "title": "Author Surname",
+          "layout": {
+            "cols": 6
+          }
         },
         "email": {
           "type": "string",

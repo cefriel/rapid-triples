@@ -75,11 +75,14 @@ p, ul, ol {
   padding: 0 !important;
   border-top: 1px solid #e0e0e0;
   min-height: unset !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
 }
 
 .footer-content {
   text-align: center;
   width: 100%;
+  margin: 0 auto;
   padding: 0.4rem 1rem;
   font-size: 0.75rem;
   color: #6c757d;

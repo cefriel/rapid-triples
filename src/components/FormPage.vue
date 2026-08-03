@@ -155,7 +155,7 @@ function notify(text: string, color?: string) {
 const vjsfOptions = computed(() => ({
   density: 'comfortable' as const,
   readOnlyPropertiesMode: 'hide' as const,
-  useExamples: true,
+  useExamples: 'items' as const,
   locale: effectiveLocale,
   initialValidation: 'never' as const,
   validateOn: 'blur' as const,
