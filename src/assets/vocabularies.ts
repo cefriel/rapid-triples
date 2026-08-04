@@ -9,14 +9,13 @@
  * To add a vocabulary:
  *   1. Place the SKOS RDF/XML file under public/vocabularies/.
  *   2. Add an entry to VOCABULARIES below.
- *   3. Reference it in your JSON Schema via x-display options or template filters.
+ *   3. Reference it in your JSON Schema or template.
  *
  * Example entry (uncomment and adapt):
  * {
  *   id: 'license',
  *   label: 'License',
  *   lang: 'en',
- *   schemaPath: 'license',
  *   sources: ['/vocabularies/licenses.rdf'],
  * },
  */
@@ -39,9 +38,6 @@ export interface VocabularySource {
   sources: string[]
   /** Default language for prefLabel extraction */
   lang: string
-  /** Dot-separated JSON path within the form schema to the field holding enum values.
-   *  For array item enums use "field.items". */
-  schemaPath: string
 }
 
 export const VOCABULARIES: VocabularySource[] = [
@@ -49,7 +45,6 @@ export const VOCABULARIES: VocabularySource[] = [
     id: 'content_type',
     label: 'Content Type',
     lang: 'en',
-    schemaPath: 'content.content_type',
     sources: ['/vocabularies/content-types.rdf'],
   },
 ]
