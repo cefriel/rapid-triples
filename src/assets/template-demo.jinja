@@ -3,7 +3,8 @@
 {%- set content = obj.content -%}
 {%- set contacts = obj.contacts -%}
 {%- set resource_name = slugify(header.name) -%}
-{%- set resource_id = '<' + prefix + header.type + '#' + resource_name + '>' -%}
+{%- set resource_id = '<' + prefix + header.type + '/' + resource_name + '>' -%}
+{%- set content_type_id = content.content_type if content.content_type and '://' in content.content_type else vocab_map.content_type[content.content_type] -%}
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -14,7 +15,7 @@
 @prefix res: <https://knowledge.c-innovationhub.com/cefriel/resource/ontology#> .
 
 # Resource: {{header.name}}
-{{resource_id | safe}} rdf:type res:Resource ;
+{{resource_id | safe}} rdf:type res:{{header.type | safe}} ;
     dcterms:identifier "{{header.id}}" ;
     dcterms:title "{{header.name}}" ;
     {%- if header.description %}
@@ -26,6 +27,9 @@
     {%- for kw in header.keyword %}
     dcat:keyword "{{kw}}" ;
     {%- endfor %}
+    {%- if content_type_id %}
+    res:contentType <{{content_type_id}}> ;
+    {%- endif %}
     dcterms:created "{{header.creation_time}}"^^xsd:dateTime ;
     dcterms:modified "{{header.last_updated}}"^^xsd:dateTime .
 

@@ -45,5 +45,11 @@ export interface VocabularySource {
 }
 
 export const VOCABULARIES: VocabularySource[] = [
-  // Add your vocabulary sources here.
+  {
+    id: 'content_type',
+    label: 'Content Type',
+    lang: 'en',
+    schemaPath: 'content.content_type',
+    sources: ['/vocabularies/content-types.rdf'],
+  },
 ]

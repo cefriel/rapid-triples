@@ -3,6 +3,7 @@ import nunjucks from 'nunjucks'
 import * as N3 from 'n3'
 import { JsonLdSerializer } from 'jsonld-streaming-serializer'
 import type { FormConfig } from '@/assets/forms-config'
+import type { VocabularyEntry } from '@/assets/vocabularies'
 
 export type OutputFormat = 'Turtle' | 'N-Triples' | 'N-Quads' | 'JSON-LD'
 
@@ -49,6 +50,7 @@ export function useRdfGenerator() {
   async function generate(
     formData: Record<string, unknown>,
     config: FormConfig,
+    vocabularies?: Record<string, VocabularyEntry[]>,
   ): Promise<string> {
     generating.value = true
     error.value = null
@@ -61,9 +63,8 @@ export function useRdfGenerator() {
       const data = JSON.parse(JSON.stringify(formData)) as Record<string, Record<string, unknown>>
       if (!data.header) data.header = {}
       if (!data.header.id) data.header.id = crypto.randomUUID()
-      if (!data.header.creation_time) data.header.creation_time = new Date().toISOString()
-      data.header.modification_time = new Date().toISOString()
-      data.header.last_updated = new Date().toISOString()
+      if (!data.header.created) data.header.created = new Date().toISOString()
+      data.header.modified = new Date().toISOString()
       data.header.type = config.rdfClass
 
       // Render Nunjucks template
@@ -71,7 +72,16 @@ export function useRdfGenerator() {
       env.addGlobal('slugify', slugify)
       env.addGlobal('now', () => new Date())
 
-      const rendered = cleanBlankLines(env.renderString(templateStr, { obj: data, slugify, data_platform_url: 'https://kcong.cefriel.com/' }))
+      const vocab_map: Record<string, Record<string, string>> = vocabularies
+        ? Object.fromEntries(
+            Object.entries(vocabularies).map(([id, entries]) => [
+              id,
+              Object.fromEntries(entries.map((e) => [e.label, e.iri])),
+            ]),
+          )
+        : {}
+
+      const rendered = cleanBlankLines(env.renderString(templateStr, { obj: data, slugify, data_platform_url: 'https://kcong.cefriel.com/', vocab_map }))
 
       // Parse into quads — use synchronous API (no callback) to avoid async timing issues
       const templateFormat = config.templateFormat || 'text/turtle'

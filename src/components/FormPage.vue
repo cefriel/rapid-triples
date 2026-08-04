@@ -243,7 +243,7 @@ async function onGenerate() {
   isFormValid.value = true
 
   try {
-    await rdfGen.generate(model.value, currentConfig)
+    await rdfGen.generate(model.value, currentConfig, vocabContext.value)
   } catch (e) {
     notify(e instanceof Error ? e.message : msgs.value.generateFailed, 'error')
   }

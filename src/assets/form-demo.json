@@ -42,12 +42,12 @@
           "type": "string",
           "readOnly": true
         },
-        "creation_time": {
+        "created": {
           "title": "Created",
           "type": "string",
           "readOnly": true
         },
-        "last_updated": {
+        "modified": {
           "title": "Last updated",
           "type": "string",
           "readOnly": true
@@ -63,6 +63,21 @@
       "title": "Content",
       "type": "object",
       "properties": {
+        "content_type": {
+          "type": "string",
+          "title": "Content Type",
+          "description": "Select a content type from the SKOS vocabulary (demo of controlled vocabulary integration).",
+          "layout": {
+            "comp": "combobox",
+            "getItems": {
+              "expr": "context.vocabularies.content_type",
+              "itemsResults": "data",
+              "itemTitle": "data.label",
+              "itemValue": "data.label",
+              "itemKey": "data.iri"
+            }
+          }
+        },
         "sections": {
           "type": "array",
           "title": "Sections",

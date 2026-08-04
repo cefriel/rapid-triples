@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Text">
+    <skos:prefLabel xml:lang="en">Text</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Dataset">
+    <skos:prefLabel xml:lang="en">Dataset</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Image">
+    <skos:prefLabel xml:lang="en">Image</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/MovingImage">
+    <skos:prefLabel xml:lang="en">Moving Image</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Sound">
+    <skos:prefLabel xml:lang="en">Sound</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Software">
+    <skos:prefLabel xml:lang="en">Software</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/InteractiveResource">
+    <skos:prefLabel xml:lang="en">Interactive Resource</skos:prefLabel>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://purl.org/dc/dcmitype/Collection">
+    <skos:prefLabel xml:lang="en">Collection</skos:prefLabel>
+  </skos:Concept>
+
+</rdf:RDF>

@@ -9,14 +9,14 @@ export interface FormConfig {
 const formsRegistry: Record<string, FormConfig> = {
   demo: {
     label: 'Demo',
-    rdfClass: 'Resource',
+    rdfClass: 'DemoOne',
     schema: () => import('./form-demo.json').then((m) => m.default as Record<string, unknown>),
     template: () => import('./template-demo.jinja?raw').then((m) => m.default),
     templateFormat: 'text/turtle',
   },
   demo2: {
     label: 'Demo 2',
-    rdfClass: 'Resource',
+    rdfClass: 'DemoTwo',
     schema: () => import('./form-demo.json').then((m) => m.default as Record<string, unknown>),
     template: () => import('./template-demo.jinja?raw').then((m) => m.default),
     templateFormat: 'text/turtle',

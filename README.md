@@ -72,7 +72,9 @@ rapid-triples can populate form dropdowns from SKOS RDF/XML vocabulary files wit
 
 2. **Register the vocabulary** in `src/assets/vocabularies.ts` by adding an entry to the `VOCABULARIES` array. Multiple source files are merged and deduplicated by IRI before being sorted alphabetically.
 
-3. **Reference in your JSON Schema or template** via `rootData.<vocabulary>` options or directly in the Nunjucks template using `context.vocabularies['<vocabulary>']`. The parsed entries are available with `label` (`skos:prefLabel`, capitalised), `iri`, `broaderIris` (array of broader concept IRIs `skos:broader`)
+3. **Reference in your JSON Schema** using `getItems` with an expression pointing to `context.vocabularies.<vocabulary-id>`. Each entry exposed to the form is a `VocabularyEntry` object with `label` (`skos:prefLabel`, capitalised), `iri`, and `broaderIris` (array of broader concept IRIs via `skos:broader`).
+
+4. **Resolve to IRI in the Jinja template** using the `vocab_map` variable, which is automatically injected at render time as a map of maps: `{ [vocabulary-id]: { [label]: iri } }`. Use an IRI-detection pattern to also accept values that are already IRIs (e.g. pasted directly).
 
 > **Tip:** Set `brand.vocabularyLabelLang` in `src/config/branding.ts` to prefer labels in a specific language (e.g. `'it'`) when the vocabulary contains multi-language `skos:prefLabel` values.
 
@@ -92,6 +94,11 @@ Or use `publish.sh` to extract the static build without a local Node install:
 bash publish.sh
 # → dist/ contains the production build
 ```
+
+> **Note:** The `base` path in `vite.config.mts` is set to `/rapid-triples/` for production builds. If you deploy the app under a different sub-path (or at the root), update the `base` option accordingly:
+> ```ts
+> base: process.env.NODE_ENV === 'production' ? '/your-sub-path/' : '/',
+> ```
 
 ## Cite as
 
