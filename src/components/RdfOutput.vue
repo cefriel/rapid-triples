@@ -17,9 +17,10 @@
 
       <div class="rdf-controls">
         <v-btn
-          icon="mdi-content-copy"
+          :icon="copied ? 'mdi-check' : 'mdi-content-copy'"
           size="small"
           variant="text"
+          :color="copied ? 'success' : undefined"
           title="Copy to clipboard"
           :disabled="!code"
           @click="copyToClipboard"
@@ -118,22 +119,23 @@ async function copyToClipboard() {
   if (!props.code) return
   try {
     await navigator.clipboard.writeText(props.code)
-    copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
   } catch {
+    // Fallback for non-secure contexts (HTTP)
     const textarea = document.createElement('textarea')
     textarea.value = props.code
+    textarea.style.cssText = 'position:fixed;top:0;left:0;opacity:0'
     document.body.appendChild(textarea)
+    textarea.focus()
     textarea.select()
-    document.execCommand('copy')
+    try { document.execCommand('copy') } catch { /* silent */ }
     document.body.removeChild(textarea)
-    copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
   }
+  copied.value = true
+  setTimeout(() => { copied.value = false }, 2000)
 }
 </script>
 
-<style>
+<style scoped>
 .rdf-viewer {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -192,10 +194,6 @@ async function copyToClipboard() {
   cursor: pointer;
 }
 
-.rdf-wrap-toggle,
-.rdf-checkbox,
-.rdf-action-btn { display: none; }
-
 .rdf-content-container {
   flex: 1 1 0;
   min-height: 0;
@@ -217,7 +215,7 @@ async function copyToClipboard() {
   border-radius: 0;
 }
 
-.rdf-code-block code {
+.rdf-code-block :deep(code) {
   display: block;
   padding: 1rem;
   white-space: pre;
@@ -225,7 +223,7 @@ async function copyToClipboard() {
   overflow-wrap: break-word;
 }
 
-.rdf-code-block.wrap-lines code {
+.rdf-code-block.wrap-lines :deep(code) {
   white-space: pre-wrap;
 }
 

@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="vite-plugin-vue-layouts-next/client" />
 
 declare module '*.jinja?raw' {
   const content: string

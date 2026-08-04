@@ -128,7 +128,7 @@ import { brand } from '@/config/branding'
 import RdfOutput from '@/components/RdfOutput.vue'
 
 const effectiveLocale = brand.locale ?? (navigator.language?.split('-')[0] ?? 'en')
-const msgs = computed(() => getMessages(effectiveLocale))
+const msgs = getMessages(effectiveLocale)
 
 const formOptions = getFormOptions()
 const selectedForm = ref(getFormKeys()[0] || 'demo')
@@ -160,26 +160,26 @@ const vjsfOptions = computed(() => ({
   initialValidation: 'never' as const,
   validateOn: 'blur' as const,
   messages: {
-    errorRequired: msgs.value.errorRequired,
-    errorOneOf: msgs.value.errorOneOf,
-    addItem: msgs.value.addItem,
-    delete: msgs.value.delete,
-    confirm: msgs.value.confirm,
-    edit: msgs.value.edit,
-    close: msgs.value.close,
-    duplicate: msgs.value.duplicate,
-    copy: msgs.value.copy,
-    paste: msgs.value.paste,
-    sort: msgs.value.sort,
-    up: msgs.value.up,
-    down: msgs.value.down,
-    showHelp: msgs.value.showHelp,
-    default: msgs.value.default,
-    name: msgs.value.name,
-    examples: msgs.value.examples,
-    deprecated: msgs.value.deprecated,
-    keyboardDate: msgs.value.keyboardDate,
-    keyboardDateTime: msgs.value.keyboardDateTime,
+    errorRequired: msgs.errorRequired,
+    errorOneOf: msgs.errorOneOf,
+    addItem: msgs.addItem,
+    delete: msgs.delete,
+    confirm: msgs.confirm,
+    edit: msgs.edit,
+    close: msgs.close,
+    duplicate: msgs.duplicate,
+    copy: msgs.copy,
+    paste: msgs.paste,
+    sort: msgs.sort,
+    up: msgs.up,
+    down: msgs.down,
+    showHelp: msgs.showHelp,
+    default: msgs.default,
+    name: msgs.name,
+    examples: msgs.examples,
+    deprecated: msgs.deprecated,
+    keyboardDate: msgs.keyboardDate,
+    keyboardDateTime: msgs.keyboardDateTime,
   },
   context: {
     vocabularies: vocabContext.value,
@@ -195,8 +195,10 @@ const hasData = computed(() => {
 })
 
 let currentConfig: FormConfig | undefined
+let loadId = 0
 
 async function loadForm(key: string) {
+  const id = ++loadId
   const cfg = formsRegistry[key]
   if (!cfg) return
   currentConfig = cfg
@@ -209,9 +211,15 @@ async function loadForm(key: string) {
       return [vocab.id, entries] as const
     }),
   )
+
+  if (id !== loadId) return
+
   vocabContext.value = Object.fromEntries(vocabularyPairs) as Record<string, VocabularyEntry[]>
 
   const loadedSchema = await cfg.schema()
+
+  if (id !== loadId) return
+
   schema.value = loadedSchema
 
   // Load saved data or start fresh
@@ -236,7 +244,7 @@ async function onGenerate() {
 
   if (!valid) {
     isFormValid.value = false
-    notify(msgs.value.formInvalid, 'error')
+    notify(msgs.formInvalid, 'error')
     return
   }
 
@@ -245,7 +253,7 @@ async function onGenerate() {
   try {
     await rdfGen.generate(model.value, currentConfig, vocabContext.value)
   } catch (e) {
-    notify(e instanceof Error ? e.message : msgs.value.generateFailed, 'error')
+    notify(e instanceof Error ? e.message : msgs.generateFailed, 'error')
   }
 }
 
@@ -253,7 +261,7 @@ async function onFormatChange(format: Parameters<typeof rdfGen.changeFormat>[0])
   try {
     await rdfGen.changeFormat(format)
   } catch (e) {
-    notify(msgs.value.formatConversionFailed, 'error')
+    notify(msgs.formatConversionFailed, 'error')
   }
 }
 
@@ -272,9 +280,9 @@ async function onFileSelected(event: Event) {
   if (!file) return
   try {
     await formDataHelper.uploadJson(file)
-    notify(msgs.value.jsonLoaded, 'success')
+    notify(msgs.jsonLoaded, 'success')
   } catch (e) {
-    notify(e instanceof Error ? e.message : msgs.value.jsonFailed, 'error')
+    notify(e instanceof Error ? e.message : msgs.jsonFailed, 'error')
   }
   input.value = ''
 }
@@ -284,7 +292,7 @@ function onClear() {
   formRef.value?.resetValidation?.()
   isFormValid.value = false
   rdfGen.clear()
-  notify(msgs.value.formCleared)
+  notify(msgs.formCleared)
 }
 </script>
 

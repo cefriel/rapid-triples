@@ -1,11 +1,11 @@
 import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
 
 const STORAGE_PREFIX = 'rapid-triples:formData:'
-let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unknown>>) {
   const loaded = ref(false)
   let autoSaveStopHandle: WatchStopHandle | null = null
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
   function storageKey() {
     return STORAGE_PREFIX + formKey.value
@@ -55,8 +55,10 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
     const a = document.createElement('a')
     a.href = url
     a.download = `${formKey.value}-data.json`
+    document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(url)
+    document.body.removeChild(a)
+    setTimeout(() => URL.revokeObjectURL(url), 100)
   }
 
   function uploadJson(file: File): Promise<void> {
@@ -77,5 +79,5 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
     })
   }
 
-  return { init, loadSaved, clearForm, downloadJson, uploadJson, loaded }
+  return { init, clearForm, downloadJson, uploadJson, loaded }
 }

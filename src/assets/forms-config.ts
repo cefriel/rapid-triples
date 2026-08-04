@@ -23,10 +23,6 @@ const formsRegistry: Record<string, FormConfig> = {
   }
 }
 
-export function getFormConfig(key: string): FormConfig | undefined {
-  return formsRegistry[key]
-}
-
 export function getFormKeys(): string[] {
   return Object.keys(formsRegistry)
 }

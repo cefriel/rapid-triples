@@ -153,8 +153,10 @@ export function useRdfGenerator() {
     const a = document.createElement('a')
     a.href = url
     a.download = (filename || 'output') + ext
+    document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(url)
+    document.body.removeChild(a)
+    setTimeout(() => URL.revokeObjectURL(url), 100)
   }
 
   function clear() {
@@ -171,10 +173,8 @@ export function useRdfGenerator() {
     generating,
     error,
     generate,
-    serializeTo,
     changeFormat,
     downloadRdf,
     clear,
-    getFileExtension,
   }
 }
