@@ -1,11 +1,11 @@
-import { ref, watch, type Ref, type WatchStopHandle } from 'vue'
+import { ref, nextTick, type Ref } from 'vue'
 
 const STORAGE_PREFIX = 'rapid-triples:formData:'
 
 export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unknown>>) {
+  // false during programmatic model assignments; blocks vjsf's re-emitted defaults from being saved
   const loaded = ref(false)
-  let autoSaveStopHandle: WatchStopHandle | null = null
-  let debounceTimer: ReturnType<typeof setTimeout> | null = null
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined
 
   function storageKey() {
     return STORAGE_PREFIX + formKey.value
@@ -23,30 +23,28 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
     localStorage.setItem(storageKey(), JSON.stringify(model.value))
   }
 
-  function clearForm() {
-    localStorage.removeItem(storageKey())
-    model.value = {}
+  // Called from the vjsf @update:modelValue event — only fires on real user interactions
+  function onUserChange() {
+    if (!loaded.value) return
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => persist(), 500)
   }
 
-  function autoSave() {
-    if (autoSaveStopHandle) return
-
-    autoSaveStopHandle = watch(
-      model,
-      () => {
-        if (!loaded.value) return
-        if (debounceTimer) clearTimeout(debounceTimer)
-        debounceTimer = setTimeout(() => persist(), 500)
-      },
-      { deep: true },
-    )
+  function clearForm() {
+    clearTimeout(debounceTimer)
+    loaded.value = false
+    localStorage.removeItem(storageKey())
+    model.value = {}
+    // vjsf awaits nextTick before re-emitting defaults; our tick queues after its watcher trigger
+    nextTick(() => { loaded.value = true })
   }
 
   function init() {
+    clearTimeout(debounceTimer)
+    loaded.value = false
     const saved = loadSaved()
     model.value = saved ?? {}
-    loaded.value = true
-    autoSave()
+    nextTick(() => { loaded.value = true })
   }
 
   function downloadJson() {
@@ -79,5 +77,5 @@ export function useFormData(formKey: Ref<string>, model: Ref<Record<string, unkn
     })
   }
 
-  return { init, clearForm, downloadJson, uploadJson, loaded }
+  return { init, clearForm, onUserChange, downloadJson, uploadJson, loaded }
 }

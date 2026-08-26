@@ -89,6 +89,7 @@
               v-model="model"
               :schema="schema"
               :options="vjsfOptions"
+              @update:model-value="formDataHelper.onUserChange"
             />
           </v-form>
           <div v-else class="text-center pa-8">
@@ -350,7 +351,7 @@ function onClear() {
 }
 
 .toolbar-select {
-  max-width: 160px;
+  max-width: 220px;
   margin-top: 6px;
   font-size: 0.8rem;
 }
@@ -398,8 +399,9 @@ function onClear() {
   }
 
   .toolbar-select {
-    max-width: 130px;
-    margin-top: 6px;
+    min-width: 180px;
+    max-width: 220px;
+    margin-top: 4px;
   }
 
   .btn-text-desktop {
